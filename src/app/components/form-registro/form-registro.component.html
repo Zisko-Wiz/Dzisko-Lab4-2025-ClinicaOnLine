@@ -1,0 +1,146 @@
+<form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+  <mat-card class="form-card">
+    <mat-card-header>
+      <mat-card-title>Crear cuenta</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Nombre" formControlName="firstName">
+            @if (signupForm.controls['firstName'].hasError('required'))
+            {
+              <mat-error>Nombre es <strong>obligatorio</strong></mat-error>
+            }
+            @if (signupForm.controls['firstName'].hasError('pattern'))
+            {
+              <mat-error>Nombre <strong>inválido</strong></mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Apellido" formControlName="lastName">
+            @if (signupForm.controls['lastName'].hasError('required'))
+            {
+              <mat-error>Apellido es <strong>obiligatorio</strong></mat-error>
+            }
+            @if (signupForm.controls['lastName'].hasError('pattern'))
+            {
+              <mat-error>Apellido <strong>inválido</strong></mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Correo electrónico" formControlName="email">
+            @if (signupForm.controls['email'].hasError('required'))
+            {
+              <mat-error>Correo electrónico es <strong>obligatorio</strong></mat-error>
+            }
+            @if (signupForm.controls['email'].hasError('email'))
+            {
+              <mat-error>Correo electrónico <strong>inválido</strong></mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput type="password" placeholder="Contraseña" formControlName="password">
+            @if (signupForm.controls['password'].hasError('required'))
+            {
+              <mat-error>Contraseña es <strong>obiligatoria</strong></mat-error>
+            }
+            @if (signupForm.controls['password'].hasError('minlength'))
+            {
+              <mat-error>La contraseña debe tener mínimo 5 carácteres</mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="DNI" formControlName="dni">
+            @if (signupForm.controls['dni'].hasError('required'))
+            {
+              <mat-error>DNI es <strong>obligatorio</strong></mat-error>
+            }
+            @if (signupForm.controls['dni'].hasError('pattern'))
+            {
+              <mat-error>DNI <strong>inválido</strong></mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Edad" formControlName="edad">
+            @if (signupForm.controls['edad'].hasError('required'))
+            {
+              <mat-error>Edad es <strong>obligatoria</strong></mat-error>
+            }
+            @if (signupForm.controls['edad'].hasError('pattern'))
+            {
+              <mat-error>edad <strong>inválida</strong></mat-error>
+            }
+            @if (signupForm.controls['edad'].hasError('min') || signupForm.controls['edad'].hasError('max'))
+            {
+              <mat-error>Edad válida entre 18 y 99 años</mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <mat-select placeholder="Obra social" formControlName="obraSocial">
+              @for (obra of obrasSociales; track obra)
+              {
+                <mat-option [value]="obra.abbreviation">{{ obra.name }}</mat-option>
+              }
+            </mat-select>
+            @if (signupForm.controls['obraSocial'].hasError('required'))
+            {
+              <mat-error>Obra Social es <strong>obligatoria</strong></mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="avatar-col">
+        <label for="">Imágen de perfil</label>
+        @if (this.avatar1 == undefined)
+        {
+          <mat-error>Imágen de perfil es <strong>obligatoria</strong></mat-error>
+        }
+        <div class="row">
+          <div class="avatar-col">
+            @if (this.avatar1 != undefined)
+            {
+              <img src="{{this.avatar1URL}}" class="avatar-preview">
+            } @else {
+              <div id="no-avatar"></div>
+            }
+            <button class="avatarBtn" type="button" mat-raised-button (click)="fileInput.click()">Elegir imágen</button>
+            <input hidden (change)="selectAvatar($event)" #fileInput type="file" id="file" accept="image/*">
+          </div>
+        </div>
+      </div>
+
+    </mat-card-content>
+
+    <mat-card-actions class="submit-div">
+      <button matButton="elevated" color="primary" type="submit" [disabled]="(this.avatar1 == undefined) || (!this.signupForm.valid)">Enviar</button>
+    </mat-card-actions>
+
+  </mat-card>
+</form>

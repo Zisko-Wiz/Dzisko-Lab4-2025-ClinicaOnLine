@@ -1,19 +1,23 @@
-import { Component, OnInit, OnDestroy, EventEmitter } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { SupaService } from '../../services/supa.service';
 import { SigninService } from '../../services/signin.service';
-import { FormsModule } from '@angular/forms';
-import { Subscription } from 'rxjs';
 import { User } from '@supabase/supabase-js';
 
 @Component({
   selector: 'app-header',
-  imports: [ FormsModule ],
-  templateUrl: './header.component.html',
-  styleUrl: './header.component.scss'
+  imports: [
+    FormsModule,
+    RouterLink
+  ],
+  templateUrl: './header.html',
+  styleUrl: './header.scss'
 })
-export class HeaderComponent implements OnInit, OnDestroy
+export class Header implements OnInit, OnDestroy
 {
+
   public ingreso: Boolean = false;
   public mensajeBienvenida? : string = 'Bienvenido a la Clínica OnLine';
   public subscription!: Subscription;
@@ -29,16 +33,6 @@ export class HeaderComponent implements OnInit, OnDestroy
   ngOnDestroy(): void
   {
     this.subscription.unsubscribe();
-  }
-
-  public goToLogin()
-  {
-    this.router.navigate(['login']);
-  }
-
-  public goToSignUp()
-  {
-    this.router.navigate(['registrarse']);
   }
 
   public async logOut()
@@ -87,14 +81,5 @@ export class HeaderComponent implements OnInit, OnDestroy
       this.mensajeBienvenida = "Bienvenido " + nombreCapitalized;
     }
   }
-
-  public goToHome()
-  {
-    this.router.navigate(['home'])
-  }
-
-  protected goToSurvey()
-  {
-    this.router.navigate(['encuesta'])
-  }
 }
+
