@@ -11,12 +11,15 @@
 
 .main-content
 {
+    display: flex;
+    flex-direction: row;
     align-self: flex-start;
 }
 
 .msg
 {
-    background-color: white;
+    background-color: #418dcb;
+    color: white;
     width: 20vw;
     padding-left: 2vw;
     padding-right: 2vw;
@@ -24,3 +27,8 @@
     padding-bottom: 1vh;
 }
 
+#building
+{
+    height: 70vh;
+    aspect-ratio: auto;
+}
