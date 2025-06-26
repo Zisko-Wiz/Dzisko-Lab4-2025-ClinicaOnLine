@@ -52,6 +52,10 @@ export class Login implements OnInit
           console.log(error.code);            
         } else {
           this.verificated = data[0].verification;
+          if (data[0].verification)
+          {
+            this.login();  
+          }
         }
       })
   }
@@ -101,13 +105,47 @@ export class Login implements OnInit
     });
   }
 
+  protected autofill(user:number)
+  {
+    switch (user)
+    {
+      case 1:
+        this.loginForm.controls.email.setValue("gijozy@cyclelove.cc");
+        this.loginForm.controls.password.setValue("555555");
+        break;
+
+        case 2:
+        this.loginForm.controls.email.setValue("nadoho1971@coasah.com");
+        this.loginForm.controls.password.setValue("666666");
+        break;
+
+        case 3:
+        this.loginForm.controls.email.setValue("hulyne@forexzig.com");
+        this.loginForm.controls.password.setValue("777777");
+        break;
+
+        case 4:
+        this.loginForm.controls.email.setValue("sibid45934@decodewp.com");
+        this.loginForm.controls.password.setValue("222222");
+        break;
+
+        case 5:
+        this.loginForm.controls.email.setValue("zepafupi@fxzig.com");
+        this.loginForm.controls.password.setValue("333333");
+        break;
+
+        case 6:
+        this.loginForm.controls.email.setValue("gagikah800@decodewp.com");
+        this.loginForm.controls.password.setValue("111111");
+        break;
+    }
+
+    this.loginForm.updateValueAndValidity();
+  }
+
   protected ingresar()
   {
     this.getVerification();
 
-    if (this.verificated)
-    {
-      this.login()  
-    }
   }
 }
