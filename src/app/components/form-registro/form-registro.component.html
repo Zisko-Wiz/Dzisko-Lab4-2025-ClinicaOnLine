@@ -1,209 +1,218 @@
+@if (this.showSpinner)
+{
+  <div class="spinner">
+    <mat-spinner mode="indeterminate"></mat-spinner>
+  </div>
+}
+
 @if (this.showForm)
 {
-  <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
-    <mat-card class="form-card">
-      <mat-card-header>
-        <mat-card-title>Crear cuenta</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        
-        <div class="row">
-          <div class="col">
-            <mat-form-field class="full-width">
-              <input matInput placeholder="Nombre" formControlName="firstName">
-              @if (signupForm.controls['firstName'].hasError('required'))
-              {
-                <mat-error>Nombre es <strong>obligatorio</strong></mat-error>
-              }
-              @if (signupForm.controls['firstName'].hasError('pattern'))
-              {
-                <mat-error>Nombre <strong>inválido</strong></mat-error>
-              }
-            </mat-form-field>
-          </div>
-
-          <div class="col">
-            <mat-form-field class="full-width">
-              <input matInput placeholder="Apellido" formControlName="lastName">
-              @if (signupForm.controls['lastName'].hasError('required'))
-              {
-                <mat-error>Apellido es <strong>obligatorio</strong></mat-error>
-              }
-              @if (signupForm.controls['lastName'].hasError('pattern'))
-              {
-                <mat-error>Apellido <strong>inválido</strong></mat-error>
-              }
-            </mat-form-field>
-          </div>
-
-        </div>
-
-        <div class="row">
-          <div class="col">
-            <mat-form-field class="full-width">
-              <input matInput placeholder="Correo electrónico" formControlName="email">
-              @if (signupForm.controls['email'].hasError('required'))
-              {
-                <mat-error>Correo electrónico es <strong>obligatorio</strong></mat-error>
-              }
-              @if (signupForm.controls['email'].hasError('email'))
-              {
-                <mat-error>Correo electrónico <strong>inválido</strong></mat-error>
-              }
-              @if (this.errorUsuarioExiste)
-              {
-                <mat-error>*El correo ya está registrado</mat-error>
-              }
-            </mat-form-field>
-          </div>
-
-          <div class="col">
-            <mat-form-field class="full-width">
-              <input matInput type="password" placeholder="Contraseña" formControlName="password">
-              @if (signupForm.controls['password'].hasError('required'))
-              {
-                <mat-error>Contraseña es <strong>obligatoria</strong></mat-error>
-              }
-              @if (signupForm.controls['password'].hasError('minlength'))
-              {
-                <mat-error>La contraseña debe tener mínimo 6 carácteres</mat-error>
-              }
-            </mat-form-field>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col">
-            <mat-form-field class="full-width">
-              <input matInput placeholder="DNI" formControlName="dni">
-              @if (signupForm.controls['dni'].hasError('required'))
-              {
-                <mat-error>DNI es <strong>obligatorio</strong></mat-error>
-              }
-              @if (signupForm.controls['dni'].hasError('pattern'))
-              {
-                <mat-error>DNI <strong>inválido</strong></mat-error>
-              }
-            </mat-form-field>
-          </div>
-
-          <div class="col">
-            <mat-form-field class="full-width">
-              <input matInput placeholder="Edad" formControlName="edad">
-              @if (signupForm.controls['edad'].hasError('required'))
-              {
-                <mat-error>Edad es <strong>obligatoria</strong></mat-error>
-              }
-              @if (signupForm.controls['edad'].hasError('pattern'))
-              {
-                <mat-error>edad <strong>inválida</strong></mat-error>
-              }
-              @if (signupForm.controls['edad'].hasError('min') || signupForm.controls['edad'].hasError('max'))
-              {
-                <mat-error>Edad válida entre 18 y 99 años</mat-error>
-              }
-            </mat-form-field>
-          </div>
-        </div>
-
-        @if (this.formMode == 2)
-        {
-          <div class="row">
-            <div class="col">
-              <mat-form-field class="full-width">
-                <mat-select placeholder="Obra social" formControlName="obraSocial">
-                  @for (obra of obrasSociales; track obra)
-                  {
-                    <mat-option [value]="obra.abreviatura">{{ obra.nombre }}</mat-option>
-                  }
-                </mat-select>
-                @if (signupForm.controls['obraSocial'].hasError('required'))
-                {
-                  <mat-error>Obra Social es <strong>obligatoria</strong></mat-error>
-                }
-              </mat-form-field>
-            </div>
-          </div>
-        } @else if (this.formMode == 1)
-        {
-          <div class="row">
-            <div class="col">
-              <mat-form-field class="full-width">
-                <mat-select multiple placeholder="Especialidad" formControlName="especialidad">
-                  @for (especialidad of this.especialidades; track especialidad)
-                  {
-                    <mat-option [value]="{id : especialidad.id, nombre: especialidad.nombre}">{{ especialidad.nombre }}</mat-option>
-                  }
-                </mat-select>
-                @if (signupForm.controls['especialidad'].hasError('required'))
-                {
-                  <mat-error>Especialidad es <strong>obligatoria</strong></mat-error>
-                }
-              </mat-form-field>
-            </div>
-          </div>
+    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+      <mat-card class="form-card">
+        <mat-card-header>
+          <mat-card-title>Crear cuenta</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
           
-          <div class="row" >
+          <div class="row">
             <div class="col">
               <mat-form-field class="full-width">
-                <input matInput placeholder="Agregar especialidad" formControlName="newEspecialidad">
+                <input matInput placeholder="Nombre" formControlName="firstName">
+                @if (signupForm.controls['firstName'].hasError('required'))
+                {
+                  <mat-error>Nombre es <strong>obligatorio</strong></mat-error>
+                }
+                @if (signupForm.controls['firstName'].hasError('pattern'))
+                {
+                  <mat-error>Nombre <strong>inválido</strong></mat-error>
+                }
               </mat-form-field>
             </div>
-              <button type="button" matButton="elevated" (click)="addEspecialidad()">Agregar</button>
-          </div>
-        }
-
-
-        <div class="row2">
-          <div class="avatar-col">
-            <label for="">Imágen de perfil</label>
-            @if (this.avatar1 == undefined)
-            {
-              <mat-error>Imágen de perfil es <strong>obligatoria</strong></mat-error>
-            }
-            <div class="row">
-              <div class="avatar-col">
-                @if (this.avatar1 != undefined)
+  
+            <div class="col">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Apellido" formControlName="lastName">
+                @if (signupForm.controls['lastName'].hasError('required'))
                 {
-                  <img src="{{this.avatar1URL}}" class="avatar-preview">
-                } @else {
-                  <div id="no-avatar"></div>
+                  <mat-error>Apellido es <strong>obligatorio</strong></mat-error>
                 }
-                <button class="avatarBtn" type="button" mat-raised-button (click)="fileInput1.click()">Elegir imágen</button>
-                <input hidden (change)="selectAvatar($event,1)" #fileInput1 type="file" id="file1" accept="image/*">
-              </div>
-    
-              @if (this.formMode == 2)
-              {
-                <div class="avatar-col">
-                  @if (this.avatar2 != undefined)
+                @if (signupForm.controls['lastName'].hasError('pattern'))
+                {
+                  <mat-error>Apellido <strong>inválido</strong></mat-error>
+                }
+              </mat-form-field>
+            </div>
+  
+          </div>
+  
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Correo electrónico" formControlName="email">
+                @if (signupForm.controls['email'].hasError('required'))
+                {
+                  <mat-error>Correo electrónico es <strong>obligatorio</strong></mat-error>
+                }
+                @if (signupForm.controls['email'].hasError('email'))
+                {
+                  <mat-error>Correo electrónico <strong>inválido</strong></mat-error>
+                }
+                @if (this.errorUsuarioExiste)
+                {
+                  <mat-error>*El correo ya está registrado</mat-error>
+                }
+              </mat-form-field>
+            </div>
+  
+            <div class="col">
+              <mat-form-field class="full-width">
+                <input matInput type="password" placeholder="Contraseña" formControlName="password">
+                @if (signupForm.controls['password'].hasError('required'))
+                {
+                  <mat-error>Contraseña es <strong>obligatoria</strong></mat-error>
+                }
+                @if (signupForm.controls['password'].hasError('minlength'))
+                {
+                  <mat-error>La contraseña debe tener mínimo 6 carácteres</mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </div>
+  
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="DNI" formControlName="dni">
+                @if (signupForm.controls['dni'].hasError('required'))
+                {
+                  <mat-error>DNI es <strong>obligatorio</strong></mat-error>
+                }
+                @if (signupForm.controls['dni'].hasError('pattern'))
+                {
+                  <mat-error>DNI <strong>inválido</strong></mat-error>
+                }
+              </mat-form-field>
+            </div>
+  
+            <div class="col">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Edad" formControlName="edad">
+                @if (signupForm.controls['edad'].hasError('required'))
+                {
+                  <mat-error>Edad es <strong>obligatoria</strong></mat-error>
+                }
+                @if (signupForm.controls['edad'].hasError('pattern'))
+                {
+                  <mat-error>edad <strong>inválida</strong></mat-error>
+                }
+                @if (signupForm.controls['edad'].hasError('min') || signupForm.controls['edad'].hasError('max'))
+                {
+                  <mat-error>Edad válida entre 18 y 99 años</mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </div>
+  
+          @if (this.formMode == 2)
+          {
+            <div class="row">
+              <div class="col">
+                <mat-form-field class="full-width">
+                  <mat-select placeholder="Obra social" formControlName="obraSocial">
+                    @for (obra of obrasSociales; track obra)
+                    {
+                      <mat-option [value]="obra.abreviatura">{{ obra.nombre }}</mat-option>
+                    }
+                  </mat-select>
+                  @if (signupForm.controls['obraSocial'].hasError('required'))
                   {
-                    <img src="{{this.avatar2URL}}" class="avatar-preview">
+                    <mat-error>Obra Social es <strong>obligatoria</strong></mat-error>
+                  }
+                </mat-form-field>
+              </div>
+            </div>
+          } @else if (this.formMode == 1)
+          {
+            <div class="row">
+              <div class="col">
+                <mat-form-field class="full-width">
+                  <mat-select multiple placeholder="Especialidad" formControlName="especialidad">
+                    @for (especialidad of this.especialidades; track especialidad)
+                    {
+                      <mat-option [value]="{id : especialidad.id, nombre: especialidad.nombre}">{{ especialidad.nombre }}</mat-option>
+                    }
+                  </mat-select>
+                  @if (signupForm.controls['especialidad'].hasError('required'))
+                  {
+                    <mat-error>Especialidad es <strong>obligatoria</strong></mat-error>
+                  }
+                </mat-form-field>
+              </div>
+            </div>
+            
+            <div class="row" >
+              <div class="col">
+                <mat-form-field class="full-width">
+                  <input matInput placeholder="Agregar especialidad" formControlName="newEspecialidad">
+                </mat-form-field>
+              </div>
+                <button type="button" matButton="elevated" (click)="addEspecialidad()">Agregar</button>
+            </div>
+          }
+  
+  
+          <div class="row2">
+            <div class="avatar-col">
+              <label for="">Imágen de perfil</label>
+              @if (this.avatar1 == undefined)
+              {
+                <mat-error>Imágen de perfil es <strong>obligatoria</strong></mat-error>
+              }
+              <div class="row">
+                <div class="avatar-col">
+                  @if (this.avatar1 != undefined)
+                  {
+                    <img src="{{this.avatar1URL}}" class="avatar-preview">
                   } @else {
                     <div id="no-avatar"></div>
                   }
-                  <button class="avatarBtn" type="button" mat-raised-button (click)="fileInput2.click()">Elegir imágen</button>
-                  <input hidden (change)="selectAvatar($event,2)" #fileInput2 type="file" id="file2" accept="image/*">
+                  <button class="avatarBtn" type="button" mat-raised-button (click)="fileInput1.click()">Elegir imágen</button>
+                  <input hidden (change)="selectAvatar($event,1)" #fileInput1 type="file" id="file1" accept="image/*">
                 </div>
-              }
+      
+                @if (this.formMode == 2)
+                {
+                  <div class="avatar-col">
+                    @if (this.avatar2 != undefined)
+                    {
+                      <img src="{{this.avatar2URL}}" class="avatar-preview">
+                    } @else {
+                      <div id="no-avatar"></div>
+                    }
+                    <button class="avatarBtn" type="button" mat-raised-button (click)="fileInput2.click()">Elegir imágen</button>
+                    <input hidden (change)="selectAvatar($event,2)" #fileInput2 type="file" id="file2" accept="image/*">
+                  </div>
+                }
+              </div>
             </div>
           </div>
+  
+  
+        </mat-card-content>
+        
+        <div class="row2">
+          <button type="button" id="cancel-btn" matButton="elevated" routerLink="/home">Cancelar</button>
+  
+          <mat-card-actions class="submit-div">
+            <button matButton="elevated" color="primary" type="submit" [disabled]="(this.avatar1 == undefined) || (!this.signupForm.valid) || (this.avatar2 == undefined)">Enviar</button>
+          </mat-card-actions>
         </div>
+  
+      </mat-card>
+    </form>
+  }
 
-
-      </mat-card-content>
-      
-      <div class="row2">
-        <button type="button" id="cancel-btn" matButton="elevated" routerLink="/home">Cancelar</button>
-
-        <mat-card-actions class="submit-div">
-          <button matButton="elevated" color="primary" type="submit" [disabled]="(this.avatar1 == undefined) || (!this.signupForm.valid) || (this.avatar2 == undefined)">Enviar</button>
-        </mat-card-actions>
-      </div>
-
-    </mat-card>
-  </form>
-} @else {
+ @else {
   <div class="row2">
     <div class="container">
       <img class="img-btn" src="paciente.png" (click)="this.selectForm(2)">

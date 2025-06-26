@@ -6,8 +6,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCardModule } from '@angular/material/card';
 import { SupaService } from '../../services/supa.service';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Especialidad } from '../../models/especialidad.models';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 @Component({
@@ -22,11 +23,14 @@ import { Especialidad } from '../../models/especialidad.models';
     MatCardModule,
     ReactiveFormsModule,
     RouterLink,
-    FormsModule
+    FormsModule,
+    MatProgressSpinnerModule
   ]
 })
 export class FormRegistroComponent implements OnInit
 {
+  private router = inject(Router);
+  protected showSpinner: boolean = true;
   protected errorUsuarioExiste : boolean = false;
   protected showForm: boolean = false;
   protected formMode: number = 0;
@@ -127,7 +131,7 @@ export class FormRegistroComponent implements OnInit
           const fileExt2 = this.avatar2?.name.split('.').pop();
           const name2 = this.signupForm.get('email')?.value?.toLowerCase().split('@');
           const filePath = `${name2![0]}-2.${fileExt2}`;
-          await this.supabaseService.uploadAvatar(filePath, file2!);
+          await this.supabaseService.uploadAvatar(filePath, file2!).then( ()=> {this.goToSuccessPage()} );
           break;
       }
 
@@ -172,6 +176,8 @@ export class FormRegistroComponent implements OnInit
         if (newRequest)
         {
           this.insertNewEsp();
+        } else {
+          this.showSpinner = false;          
         }
 
       }
@@ -190,6 +196,7 @@ export class FormRegistroComponent implements OnInit
         console.log(error.code);            
       } else {
         this.obrasSociales = data;
+        this.showSpinner = false;
       }
     })
   }
@@ -213,6 +220,8 @@ export class FormRegistroComponent implements OnInit
         }
       }
     }
+
+    this.goToSuccessPage();
   }
 
   protected selectForm(mode:number)
@@ -271,6 +280,8 @@ export class FormRegistroComponent implements OnInit
           {
             this.uploadAvatar(2);
           }
+        } else {
+          this.showSpinner = false;
         }
       }
     )
@@ -337,12 +348,20 @@ export class FormRegistroComponent implements OnInit
     if (newEsp == true)
     {
       this.getEspecialidades(true)
+    } else {
+      this.goToSuccessPage();
     }
 
   }
 
+  goToSuccessPage()
+  {
+    this.router.navigate(["cuenta-creada"])
+  }
+
   onSubmit(): void
   {
+    this.showSpinner = true;
     this.registrar();
     
   }

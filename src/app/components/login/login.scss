@@ -58,17 +58,30 @@
   justify-content: center;
   align-items: center;
   align-content: center;
-  padding-top: 10vh;
+  padding-top: 5vh;
 }
 
 .logo
 {
-    width: 20vw;
-    aspect-ratio: auto;
-    margin-bottom: 2vh;
+  width: 20vw;
+  aspect-ratio: auto;
+  margin-bottom: 2vh;
 }
 
 .error
 {
-    color: red;
+  color: red;
+}
+
+.quick-acces
+{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.img-btn
+{
+  width: 10vw;
 }

@@ -26,7 +26,7 @@ export class Login implements OnInit
   protected error: boolean = true;
   protected errorInvalido: boolean = false;
   protected errorNoConfirmado: boolean = false;
-  protected verificated: boolean = true;
+  protected verificated: boolean | null = null;
 
   loginForm = new FormGroup(
   {
