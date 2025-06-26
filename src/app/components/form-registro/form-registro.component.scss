@@ -64,3 +64,35 @@
   justify-content: center;
   align-items: center;
 }
+.file-btn
+{
+  opacity: 0;
+}
+
+#cancel-btn
+{
+  width: 8%;
+}
+
+.row2
+{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container
+{
+  display: flex;
+  flex-direction: row;
+  width: 40vw;
+  margin-top: 20vh;
+  justify-content: space-around;
+  align-content: space-around;
+}
+
+.img-btn
+{
+  width: 20vw;
+  margin: 5px;
+}
