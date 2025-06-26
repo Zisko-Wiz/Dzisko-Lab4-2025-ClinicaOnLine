@@ -8,10 +8,10 @@
         @if (this.ingreso)
         {
             <li style="float:right"><button (click)="logOut()">Salir</button></li>
-            <li style="float: left;"><button>Mi Perfil</button></li>
+            <li style="float: right;"><button>Mi Perfil</button></li>
         } @else
         {
-            <li style="float:right"><button >Ingresar</button></li>
+            <li style="float:right"><button routerLink="/ingreso">Ingresar</button></li>
             <li style="float:right"><button routerLink="/registro">Registrarse</button></li>
         }
     </ul>

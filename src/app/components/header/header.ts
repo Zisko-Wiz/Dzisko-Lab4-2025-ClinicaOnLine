@@ -62,7 +62,6 @@ export class Header implements OnInit, OnDestroy
         if (data != undefined)
         {
           this.ingreso = true;
-          this.setWelcomeMessage();
         }
       }
     })

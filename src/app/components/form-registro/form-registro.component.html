@@ -27,7 +27,7 @@
               <input matInput placeholder="Apellido" formControlName="lastName">
               @if (signupForm.controls['lastName'].hasError('required'))
               {
-                <mat-error>Apellido es <strong>obiligatorio</strong></mat-error>
+                <mat-error>Apellido es <strong>obligatorio</strong></mat-error>
               }
               @if (signupForm.controls['lastName'].hasError('pattern'))
               {
@@ -50,6 +50,10 @@
               {
                 <mat-error>Correo electrónico <strong>inválido</strong></mat-error>
               }
+              @if (this.errorUsuarioExiste)
+              {
+                <mat-error>*El correo ya está registrado</mat-error>
+              }
             </mat-form-field>
           </div>
 
@@ -58,11 +62,11 @@
               <input matInput type="password" placeholder="Contraseña" formControlName="password">
               @if (signupForm.controls['password'].hasError('required'))
               {
-                <mat-error>Contraseña es <strong>obiligatoria</strong></mat-error>
+                <mat-error>Contraseña es <strong>obligatoria</strong></mat-error>
               }
               @if (signupForm.controls['password'].hasError('minlength'))
               {
-                <mat-error>La contraseña debe tener mínimo 5 carácteres</mat-error>
+                <mat-error>La contraseña debe tener mínimo 6 carácteres</mat-error>
               }
             </mat-form-field>
           </div>
@@ -110,7 +114,7 @@
                 <mat-select placeholder="Obra social" formControlName="obraSocial">
                   @for (obra of obrasSociales; track obra)
                   {
-                    <mat-option [value]="obra.id">{{ obra.nombre }}</mat-option>
+                    <mat-option [value]="obra.abreviatura">{{ obra.nombre }}</mat-option>
                   }
                 </mat-select>
                 @if (signupForm.controls['obraSocial'].hasError('required'))
@@ -190,7 +194,7 @@
       </mat-card-content>
       
       <div class="row2">
-        <button id="cancel-btn" matButton="elevated" routerLink="/home">Cancelar</button>
+        <button type="button" id="cancel-btn" matButton="elevated" routerLink="/home">Cancelar</button>
 
         <mat-card-actions class="submit-div">
           <button matButton="elevated" color="primary" type="submit" [disabled]="(this.avatar1 == undefined) || (!this.signupForm.valid) || (this.avatar2 == undefined)">Enviar</button>

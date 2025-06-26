@@ -1,0 +1,74 @@
+.full-width
+{
+  width: 100%;
+}
+
+.form-card
+{
+  min-width: 120px;
+  margin: 20px auto;
+  width: 70vw;
+}
+
+.mat-radio-button
+{
+  display: block;
+  margin: 5px 0;
+}
+
+.row
+{
+  display: flex;
+  flex-direction: row;
+}
+
+.col
+{
+  flex: 1;
+  margin-right: 20px;
+}
+
+.col:last-child
+{
+  margin-right: 0;
+}
+
+.submit-div
+{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#cancel-btn
+{
+  width: 8%;
+}
+
+.row2
+{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container
+{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  padding-top: 10vh;
+}
+
+.logo
+{
+    width: 20vw;
+    aspect-ratio: auto;
+    margin-bottom: 2vh;
+}
+
+.error
+{
+    color: red;
+}

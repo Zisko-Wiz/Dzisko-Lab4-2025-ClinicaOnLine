@@ -1,0 +1,69 @@
+<div class="container">
+  <form [formGroup]="this.loginForm" (ngSubmit)="ingresar()">
+    <mat-card class="form-card">
+      <mat-card-header>
+        <mat-card-title>Ingresar</mat-card-title>
+      </mat-card-header>
+
+      <div class="row2">
+        <img class="logo" src="hospital.png" >
+      </div>
+
+
+
+      <mat-card-content>
+          <div class="col">
+            @if (this.errorInvalido)
+            {
+              <p class="error">*Correo o contraseña inválidos</p>
+            }
+            @if (!this.verificated)
+            {
+              <p class="error">*Cuenta no aprobada por administrador</p>
+            }
+            @if (this.errorNoConfirmado)
+            {
+              <p class="error">*Correo no confirmado</p>
+            }
+
+
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Correo electrónico" formControlName="email">
+              @if (loginForm.controls['email'].hasError('required'))
+              {
+                <mat-error>Correo electrónico es <strong>obligatorio</strong></mat-error>
+              }
+              @if (loginForm.controls['email'].hasError('email'))
+              {
+                <mat-error>Correo electrónico <strong>inválido</strong></mat-error>
+              }
+            </mat-form-field>
+          </div>
+
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput type="password" placeholder="Contraseña" formControlName="password">
+              @if (loginForm.controls['password'].hasError('required'))
+              {
+                <mat-error>Contraseña es <strong>obligatoria</strong></mat-error>
+              }
+              @if (loginForm.controls['password'].hasError('minlength'))
+              {
+                <mat-error>La contraseña debe tener mínimo 6 carácteres</mat-error>
+              }
+            </mat-form-field>
+          </div>
+
+      </mat-card-content>
+      
+      <div class="row2">
+        <button type="button" id="cancel-btn" matButton="elevated" routerLink="/home">Cancelar</button>
+
+        <mat-card-actions class="submit-div">
+          <button matButton="elevated" color="primary" type="submit" [disabled]="(!this.loginForm.valid)">Ingresar</button>
+        </mat-card-actions>
+      </div>
+
+    </mat-card>
+  </form>
+</div>
