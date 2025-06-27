@@ -46,6 +46,7 @@ export class Header implements OnInit, OnDestroy
         this.signInService.getUser();
         this.ingreso = false;
         this.mensajeBienvenida = "";
+        this.router.navigate(["home"]);
       }
     });
 

@@ -5,7 +5,7 @@
   </div>
 }
 
-@if (this.showForm)
+@if (this.showForm && !this.showSpinner)
 {
     <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
       <mat-card class="form-card">

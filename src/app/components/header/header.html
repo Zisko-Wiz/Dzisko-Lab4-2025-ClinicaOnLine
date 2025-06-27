@@ -3,12 +3,12 @@
         <li>
             <img style="float: left;" src="hospital.png" alt="logo" class="logo">
         </li>
-        <li ><button>Página principal</button></li>
+        <li ><button routerLink="/home">Página principal</button></li>
         <li><h1>{{mensajeBienvenida}}</h1></li>
         @if (this.ingreso)
         {
             <li style="float:right"><button (click)="logOut()">Salir</button></li>
-            <li style="float: right;"><button>Mi Perfil</button></li>
+            <li style="float: right;"><button routerLink="/usuarios">Usuarios</button></li>
         } @else
         {
             <li style="float:right"><button routerLink="/ingreso">Ingresar</button></li>

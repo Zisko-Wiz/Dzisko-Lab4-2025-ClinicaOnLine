@@ -1,0 +1,41 @@
+.full-width-table
+{
+  width: 100%;
+}
+
+.container
+{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.users-table
+{
+  padding-top: 2vh;
+  width: 80vw;
+}
+
+.options
+{
+  padding-top: 2vh;
+}
+
+.spinner
+{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  background-color: rgb(255, 255, 255, 0.7);
+}
+
+body
+{
+  height: 90vh;
+}

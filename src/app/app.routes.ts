@@ -22,5 +22,9 @@ export const routes: Routes = [
     {
         path: 'cuenta-creada',
         loadComponent: () => import('./components/signup-success/signup-success').then(c => c.SignupSuccess)
+    },
+    {
+        path: 'usuarios',
+        loadComponent: () => import('./components/users/users.component').then(c => c.UsersComponent)
     }
 ];
