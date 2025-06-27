@@ -49,8 +49,6 @@ export class Header implements OnInit, OnDestroy
         this.router.navigate(["home"]);
       }
     });
-
-    
   }
 
   public getUser()
@@ -67,7 +65,6 @@ export class Header implements OnInit, OnDestroy
       }
     })
   }
-
   private async setWelcomeMessage()
   {
     if (this.signInService.user != undefined)

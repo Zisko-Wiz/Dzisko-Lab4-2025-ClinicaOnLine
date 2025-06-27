@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, input, OnInit } from '@angular/core';
 import { ReactiveFormsModule, Validators, FormGroup, FormControl, FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -9,6 +9,8 @@ import { SupaService } from '../../services/supa.service';
 import { Router, RouterLink } from '@angular/router';
 import { Especialidad } from '../../models/especialidad.models';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { SigninService } from '../../services/signin.service';
+import { Header } from '../header/header';
 
 
 @Component({
@@ -24,12 +26,14 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     ReactiveFormsModule,
     RouterLink,
     FormsModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    Header
   ]
 })
 export class FormRegistroComponent implements OnInit
 {
   private router = inject(Router);
+  protected signInService = inject(SigninService);
   protected showSpinner: boolean = true;
   protected errorUsuarioExiste : boolean = false;
   protected showForm: boolean = false;
@@ -48,7 +52,6 @@ export class FormRegistroComponent implements OnInit
   protected obrasSociales : any[] = [];
   protected email: string = "";
   protected password: string = "";
-
   signupForm = new FormGroup(
   {
     firstName: new FormControl("", [Validators.pattern(/^[\p{Letter}\p{Mark}]+$/u), Validators.required]),
@@ -228,6 +231,13 @@ export class FormRegistroComponent implements OnInit
   {
     switch (mode)
     {
+      case 0:
+        this.avatar2 = "";
+        this.signupForm.controls.obraSocial.setValue("NON");
+        this.signupForm.controls.obraSocial.removeValidators([Validators.required])
+        this.signupForm.controls.obraSocial.updateValueAndValidity();
+        break;
+
       case 1:
         this.avatar2 = "";
         this.signupForm.controls.obraSocial.setValue("NON");
@@ -291,6 +301,19 @@ export class FormRegistroComponent implements OnInit
   {
     switch (this.formMode)
     {
+      case 0:
+        var {data,  error } = await this.supabaseService.supabase.from('users').insert
+        ({
+          firstname: this.signupForm.get('firstName')?.value,
+          surname: this.signupForm.get('lastName')?.value,
+          dni: this.signupForm.get('dni')?.value,
+          age: this.signupForm.get('edad')?.value,
+          role: 'administrador',
+          email: this.signupForm.get('email')?.value,
+          verification: true
+        })
+        break;
+
       case 1:
         var {data,  error } = await this.supabaseService.supabase.from('users').insert
         ({

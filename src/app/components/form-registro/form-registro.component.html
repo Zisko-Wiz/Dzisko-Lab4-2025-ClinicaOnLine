@@ -213,10 +213,15 @@
   }
 
  @else {
+  <app-header></app-header>
   <div class="row2">
     <div class="container">
       <img class="img-btn" src="paciente.png" (click)="this.selectForm(2)">
       <img class="img-btn" src="especialista.png" (click)="this.selectForm(1)">
+      @if (this.signInService.userRole == "administrador")
+      {
+        <img src="admin.png" class="img-btn" (click)="this.selectForm(0)">
+      }
     </div>
   </div>
 }

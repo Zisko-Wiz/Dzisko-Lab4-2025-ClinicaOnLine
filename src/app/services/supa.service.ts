@@ -1,6 +1,8 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { createClient } from '@supabase/supabase-js';
 import { environment } from '../environments/environment';
+import { Usuario } from '../models/usuario.models';
+import { SigninService } from './signin.service';
 
 
 @Injectable({
@@ -14,4 +16,5 @@ export class SupaService
   {
     return this.supabase.storage.from('profile-pictures').upload(filePath, file)
   }
+
 }
