@@ -11,6 +11,7 @@ import { Especialidad } from '../../models/especialidad.models';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SigninService } from '../../services/signin.service';
 import { Header } from '../header/header';
+import { RecaptchaFormsModule, RecaptchaModule } from 'ng-recaptcha-2';
 
 
 @Component({
@@ -27,7 +28,9 @@ import { Header } from '../header/header';
     RouterLink,
     FormsModule,
     MatProgressSpinnerModule,
-    Header
+    Header,
+    RecaptchaModule,
+    RecaptchaFormsModule
   ]
 })
 export class FormRegistroComponent implements OnInit
@@ -59,16 +62,21 @@ export class FormRegistroComponent implements OnInit
     edad: new FormControl("", [Validators.pattern(/^\d+$/), Validators.min(18), Validators.max(99), Validators.required]),
     email: new FormControl("", [Validators.required, Validators.email]),
     password: new FormControl("", [Validators.required, Validators.minLength(6)]),
-    dni: new FormControl("", [Validators.required, Validators.pattern(/^\d+$/)]),
+    dni: new FormControl("", [Validators.required, Validators.pattern(/^\d+$/), Validators.min(8)]),
     obraSocial: new FormControl("", [Validators.required]),
     especialidad: new FormControl("", [Validators.required]),
-    newEspecialidad: new FormControl("")
+    newEspecialidad: new FormControl(""),
+    recaptchaReactive: new FormControl("", Validators.required)
   });
 
   ngOnInit(): void
   {
     this.getEspecialidades();
     this.getObrasSociales();
+  }
+
+  resolved(captchaResponse: string) {
+    console.log(`Resolved captcha with response: ${captchaResponse}`);
   }
 
   async selectAvatar(event: any, avatarId: number)

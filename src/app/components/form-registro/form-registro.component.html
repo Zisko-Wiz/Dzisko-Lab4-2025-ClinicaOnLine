@@ -91,6 +91,10 @@
                 {
                   <mat-error>DNI <strong>inválido</strong></mat-error>
                 }
+                @if (signupForm.controls['dni'].hasError('minlength'))
+                {
+                  <mat-error>El DNI debe tener mínimo 8 números</mat-error>
+                }
               </mat-form-field>
             </div>
   
@@ -195,8 +199,12 @@
                 }
               </div>
             </div>
+
           </div>
-  
+          
+          <div class="row2">
+            <re-captcha formControlName="recaptchaReactive" siteKey="6LdizHArAAAAANl9fAZI9gxk6nMiucTZHRk7XT-P"></re-captcha>
+          </div>
   
         </mat-card-content>
         

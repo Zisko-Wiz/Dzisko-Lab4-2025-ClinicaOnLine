@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { canMatchUsersGuard } from './guards/can-match-users-guard';
 
 export const routes: Routes = [
     
@@ -25,6 +26,15 @@ export const routes: Routes = [
     },
     {
         path: 'usuarios',
-        loadComponent: () => import('./components/users/users.component').then(c => c.UsersComponent)
+        loadComponent: () => import('./components/users/users.component').then(c => c.UsersComponent),
+        canMatch: [canMatchUsersGuard]
+    },
+    {
+        path: 'mi-perfil',
+        loadComponent: () => import('./components/perfil/perfil').then(c => c.Perfil)
+    },
+    {
+        path: '**',
+        loadComponent: () => import('./components/error-page/error-page').then(c => c.ErrorPage)
     }
 ];
