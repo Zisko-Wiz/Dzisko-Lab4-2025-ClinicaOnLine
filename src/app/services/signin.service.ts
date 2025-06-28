@@ -9,16 +9,21 @@ import { Usuario } from '../models/usuario.models';
 export class SigninService {
   public isLogged: boolean = false;
   public user?: User;
-  public userRole: string = 'invitado'
+  public usuario?: Usuario;
+  public userRole: string = 'invitado';
+  public especialidades: string = "";
   public emitter = new EventEmitter<User>();
+  public avatarURL1: string = "";
+  public avatarURL2: string = "";
+
 
   constructor(private supaService: SupaService)
   {
   }
 
-  public getUser()
+  public async getUser()
   {
-    this.supaService.supabase.auth.getUser().then(({data}) =>
+    return this.supaService.supabase.auth.getUser().then(({data}) =>
     { 
       if (data.user != null)
       {
@@ -39,11 +44,11 @@ export class SigninService {
   }
 
   
-  getRole()
+  async getRole()
   {
     if (this.user)
     {
-      this.supaService.supabase.from('users')
+      return this.supaService.supabase.from('users')
       .select()
       .eq('email', this.user.email)
       .then(
@@ -55,9 +60,85 @@ export class SigninService {
           } else 
           {
             this.userRole = data![0].role;
+            this.getUsuario();
           }
         }
       )
     }
   }
+
+  async getUsuario()
+  {
+    if (this.user)
+    {
+      return this.supaService.supabase.from('users')
+      .select()
+      .eq('email', this.user.email)
+      .then(
+        ( {data, error} ) => {
+
+          if (error)
+          {
+            console.log(error.message);
+          } else 
+          {
+            this.usuario = data[0];
+            console.log();
+            
+          }
+        }
+      )
+    }
+  }
+
+  async getEspecialidades()
+  {
+    if (this.usuario?.role == "especialista")
+    {
+      return this.supaService.supabase.from('users')
+      .select(
+        `
+        especialidades (nombre)
+        `
+      )
+      .eq("email", "demekoj370@iridales.com")
+      .then(
+        ( {data, error} ) =>{
+          if (error)
+          {
+            console.log(error);
+          } else {
+              for (let index = 0; index < data[0].especialidades.length; index++)
+              {
+                if (index == 0)
+                {
+                  this.especialidades += `${data[0].especialidades[index].nombre}`
+                } else {
+                  this.especialidades += `, ${data[0].especialidades[index].nombre}`
+                }
+              }
+          }
+        }
+      )
+    }
+  }
+
+  getAvatarUrl()
+  {
+    var email = this.usuario?.email.split('@');
+    console.log(this.usuario);
+    
+    var path = `${email![0]}-1`
+    var { data } = this.supaService.supabase.storage.from('profile-pictures').getPublicUrl(path)
+    this.avatarURL1 = data.publicUrl;
+  
+    if (this.usuario?.role == "paciente")
+    {
+      path = `${email![0]}-2`
+      var { data } = this.supaService.supabase.storage.from('profile-pictures').getPublicUrl(path)
+      this.avatarURL2 = data.publicUrl;    
+    }
+
+  }
+    
 }

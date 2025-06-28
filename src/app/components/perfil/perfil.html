@@ -5,66 +5,79 @@
     <div class="info">
 
         <div id="avatar-section">
-            <img class="avatar" src="admin.png">
+            <img class="avatar" src="{{this.signInService.avatarURL1}}">
             @if (this.signInService.userRole == "paciente")
             {
-                <img class="avatar" src="admin.png">
+                <img class="avatar" src="{{this.signInService.avatarURL2}}">
             }
         </div>
 
-        <h1 id="nombre">Nombre Apellido</h1>
+        <h1 id="nombre">{{this.signInService.usuario?.firstname}} {{this.signInService.usuario?.surname}}</h1>
 
         <div id="datos">
-            <h2>Email: email&#64;email.com</h2>
-            <h2>DNI: 20202020</h2>
-            <h2>Edad: 99</h2>
-            <h2>Obra Social: NON</h2>
-            <h2>Especialidades: Cardiología, Neurología</h2>
+            <h2>Email: {{this.signInService.usuario?.email}}</h2>
+            <h2>DNI: {{this.signInService.usuario?.dni}}</h2>
+            <h2>Edad: {{this.signInService.usuario?.age}}</h2>
+            
+            @if (this.signInService.userRole == "paciente")
+            {
+                <h2>Obra Social: {{this.signInService.usuario?.obra_social}}</h2>
+            }
+
+            @if (this.signInService.userRole == "especialista")
+            {
+                <h2>Especialidades: {{this.signInService.especialidades}}</h2>
+            }
+
             <h2></h2>
         </div>
     </div>
 
-    <div class="turnos">
-        <h1>Turnos</h1>
-
-        <div class="row">
-            <h2 class="day">Lunes</h2>
-            <mat-select placeholder="hora inicial"></mat-select>
-            <mat-select placeholder="hora final"></mat-select>
+    @if (this.signInService.userRole == "especialista")
+    {
+        <div class="turnos">
+            <h1>Turnos</h1>
+    
+            <div class="row">
+                <h2 class="day">Lunes</h2>
+                <mat-select placeholder="hora inicial"></mat-select>
+                <mat-select placeholder="hora final"></mat-select>
+            </div>
+    
+            <div class="row">
+                <h2 class="day">Martes</h2>
+                <mat-select placeholder="hora inicial"></mat-select>
+                <mat-select placeholder="hora final"></mat-select>
+            </div>
+    
+            <div class="row">
+                <h2 class="day">Miércoles</h2>
+                <mat-select placeholder="hora inicial"></mat-select>
+                <mat-select placeholder="hora final"></mat-select>
+            </div>
+    
+            <div class="row">
+                <h2 class="day">Jueves</h2>
+                <mat-select placeholder="hora inicial"></mat-select>
+                <mat-select placeholder="hora final"></mat-select>
+            </div>
+    
+            <div class="row">
+                <h2 class="day">Viernes</h2>
+                <mat-select placeholder="hora inicial"></mat-select>
+                <mat-select placeholder="hora final"></mat-select>
+            </div>
+    
+            <div class="row">
+                <h2 class="day">Sábado</h2>
+                <mat-select placeholder="hora inicial"></mat-select>
+                <mat-select placeholder="hora final"></mat-select>
+            </div>
+    
+            <button mat-flat-button>Aceptar</button>
+            
         </div>
+    }
 
-        <div class="row">
-            <h2 class="day">Martes</h2>
-            <mat-select placeholder="hora inicial"></mat-select>
-            <mat-select placeholder="hora final"></mat-select>
-        </div>
-
-        <div class="row">
-            <h2 class="day">Miércoles</h2>
-            <mat-select placeholder="hora inicial"></mat-select>
-            <mat-select placeholder="hora final"></mat-select>
-        </div>
-
-        <div class="row">
-            <h2 class="day">Jueves</h2>
-            <mat-select placeholder="hora inicial"></mat-select>
-            <mat-select placeholder="hora final"></mat-select>
-        </div>
-
-        <div class="row">
-            <h2 class="day">Viernes</h2>
-            <mat-select placeholder="hora inicial"></mat-select>
-            <mat-select placeholder="hora final"></mat-select>
-        </div>
-
-        <div class="row">
-            <h2 class="day">Sábado</h2>
-            <mat-select placeholder="hora inicial"></mat-select>
-            <mat-select placeholder="hora final"></mat-select>
-        </div>
-
-        <button mat-flat-button>Aceptar</button>
-        
-    </div>
 
 </div>

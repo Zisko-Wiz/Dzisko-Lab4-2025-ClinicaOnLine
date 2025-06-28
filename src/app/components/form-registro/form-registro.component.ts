@@ -131,17 +131,15 @@ export class FormRegistroComponent implements OnInit
       switch (avatarSelected) {
         case 1:
           const file1 = this.avatar1;
-          const fileExt1 = this.avatar1?.name.split('.').pop();
           const name1= this.signupForm.get('email')?.value?.toLowerCase().split('@');
-          const filePath1 = `${name1![0]}-1.${fileExt1}`;
+          const filePath1 = `${name1![0]}-1`;
           await this.supabaseService.uploadAvatar(filePath1, file1!);
           break;
       
         case 2:
           const file2 = this.avatar2;
-          const fileExt2 = this.avatar2?.name.split('.').pop();
           const name2 = this.signupForm.get('email')?.value?.toLowerCase().split('@');
-          const filePath = `${name2![0]}-2.${fileExt2}`;
+          const filePath = `${name2![0]}-2`;
           await this.supabaseService.uploadAvatar(filePath, file2!).then( ()=> {this.goToSuccessPage()} );
           break;
       }

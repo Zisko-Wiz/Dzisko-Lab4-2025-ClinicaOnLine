@@ -27,12 +27,21 @@ export class Header implements OnInit, OnDestroy
   ngOnInit(): void
   {
     this.getUser();
-    this.signInService.getUser();
+
+    this.signInService.getUser()
+    .then( () => {this.signInService.getUsuario()
+      .then( () => {this.signInService.getEspecialidades()
+        .then( () => {this.signInService.getAvatarUrl()
+        })
+      })
+    })
+    ;
   }
 
   ngOnDestroy(): void
   {
     this.subscription.unsubscribe();
+    this.signInService.especialidades = "";
   }
 
   public async logOut()
@@ -46,6 +55,7 @@ export class Header implements OnInit, OnDestroy
         this.signInService.getUser();
         this.ingreso = false;
         this.mensajeBienvenida = "";
+        this.signInService.especialidades = "";
         this.router.navigate(["home"]);
       }
     });
