@@ -35,48 +35,128 @@
 
     @if (this.signInService.userRole == "especialista")
     {
-        <div class="turnos">
-            <h1>Turnos</h1>
-    
-            <div class="row">
-                <h2 class="day">Lunes</h2>
-                <mat-select placeholder="hora inicial"></mat-select>
-                <mat-select placeholder="hora final"></mat-select>
-            </div>
-    
-            <div class="row">
-                <h2 class="day">Martes</h2>
-                <mat-select placeholder="hora inicial"></mat-select>
-                <mat-select placeholder="hora final"></mat-select>
-            </div>
-    
-            <div class="row">
-                <h2 class="day">Miércoles</h2>
-                <mat-select placeholder="hora inicial"></mat-select>
-                <mat-select placeholder="hora final"></mat-select>
-            </div>
-    
-            <div class="row">
-                <h2 class="day">Jueves</h2>
-                <mat-select placeholder="hora inicial"></mat-select>
-                <mat-select placeholder="hora final"></mat-select>
-            </div>
-    
-            <div class="row">
-                <h2 class="day">Viernes</h2>
-                <mat-select placeholder="hora inicial"></mat-select>
-                <mat-select placeholder="hora final"></mat-select>
-            </div>
-    
-            <div class="row">
-                <h2 class="day">Sábado</h2>
-                <mat-select placeholder="hora inicial"></mat-select>
-                <mat-select placeholder="hora final"></mat-select>
-            </div>
-    
-            <button mat-flat-button>Aceptar</button>
-            
-        </div>
+        <form class="turnos" [formGroup]="perfilForm">
+                <h1>Turnos</h1>
+        
+                <div class="row">
+                    
+                    <h2 class="day">Lunes</h2>
+                        <mat-select placeholder="hora inicial" formControlName="lunes1">
+                            @for (hora of this.horarios; track hora)
+                            {
+                                @if(this.perfilForm.get("lunes2")?.value != hora)
+                            {
+                                <mat-option [value]="hora">{{ hora }}</mat-option>
+                            }
+                            }
+                        </mat-select>
+                    <mat-select placeholder="hora final" formControlName="lunes2">
+                        @for (hora of this.horarios; track hora)
+                        {
+                            @if(this.perfilForm.get("lunes1")?.value != hora)
+                            {
+                                <mat-option [value]="hora">{{ hora }}</mat-option>
+                            }
+                        }
+                    </mat-select>
+
+                    <button mat-flat-button (click)="this.clearSelection(1)">Cancelar selección</button>
+
+                </div>
+        
+                <div class="row">
+                    <h2 class="day">Martes</h2>
+                    <mat-select placeholder="hora inicial" formControlName="martes1">
+                        @for (hora of this.horarios; track hora)
+                        {
+                            <mat-option [value]="hora">{{ hora }}</mat-option>
+                        }
+                    </mat-select>
+                    <mat-select placeholder="hora final" formControlName="martes2">
+                        @for (hora of this.horarios; track hora)
+                        {
+                            <mat-option [value]="hora">{{ hora }}</mat-option>
+                        }
+                    </mat-select>
+
+                    <button mat-flat-button (click)="this.clearSelection(2)">Cancelar selección</button>
+                </div>
+        
+                <div class="row">
+                    <h2 class="day">Miércoles</h2>
+                    <mat-select placeholder="hora inicial" formControlName="miercoles1">
+                        @for (hora of this.horarios; track hora)
+                        {
+                            <mat-option [value]="hora">{{ hora }}</mat-option>
+                        }
+                    </mat-select>
+                    <mat-select placeholder="hora final" formControlName="miercoles2">
+                        @for (hora of this.horarios; track hora)
+                        {
+                            <mat-option [value]="hora">{{ hora }}</mat-option>
+                        }
+                    </mat-select>
+                    
+                    <button mat-flat-button (click)="this.clearSelection(3)">Cancelar selección</button>
+                </div>
+        
+                <div class="row">
+                    <h2 class="day">Jueves</h2>
+                    <mat-select placeholder="hora inicial" formControlName="jueves1">
+                        @for (hora of this.horarios; track hora)
+                        {
+                            <mat-option [value]="hora">{{ hora }}</mat-option>
+                        }
+                    </mat-select>
+                    <mat-select placeholder="hora final" formControlName="jueves2">
+                        @for (hora of this.horarios; track hora)
+                        {
+                            <mat-option [value]="hora">{{ hora }}</mat-option>
+                        }
+                    </mat-select>
+                    
+                    <button mat-flat-button (click)="this.clearSelection(4)">Cancelar selección</button>
+                </div>
+        
+                <div class="row">
+                    <h2 class="day">Viernes</h2>
+                    <mat-select placeholder="hora inicial" formControlName="viernes1">
+                        @for (hora of this.horarios; track hora)
+                        {
+                            <mat-option [value]="hora">{{ hora }}</mat-option>
+                        }
+                    </mat-select>
+                    <mat-select placeholder="hora final" formControlName="viernes2">
+                        @for (hora of this.horarios; track hora)
+                        {
+                            <mat-option [value]="hora">{{ hora }}</mat-option>
+                        }
+                    </mat-select>
+                    
+                    <button mat-flat-button (click)="this.clearSelection(5)">Cancelar selección</button>
+                </div>
+        
+                <div class="row">
+                    <h2 class="day">Sábado</h2>
+                    <mat-select placeholder="hora inicial" formControlName="sabado1">
+                        @for (hora of this.horarioSabado; track hora)
+                        {
+                            <mat-option [value]="hora">{{ hora }}</mat-option>
+                        }
+                    </mat-select>
+                    <mat-select placeholder="hora final" formControlName="sabado2">
+                        @for (hora of this.horarioSabado; track hora)
+                        {
+                            <mat-option [value]="hora">{{ hora }}</mat-option>
+                        }
+                    </mat-select>
+                    
+                    <button mat-flat-button (click)="clearSelection(6)">Cancelar selección</button>
+                </div>
+        
+                <button mat-flat-button (click)="this.cargarNuevosHorarios()">Aceptar</button>
+                
+        </form>
     }
 
 

@@ -75,9 +75,9 @@ export class FormRegistroComponent implements OnInit
     this.getObrasSociales();
   }
 
-  resolved(captchaResponse: string) {
-    console.log(`Resolved captcha with response: ${captchaResponse}`);
-  }
+  // resolved(captchaResponse: string) {
+  //   console.log(`Resolved captcha with response: ${captchaResponse}`);
+  // }
 
   async selectAvatar(event: any, avatarId: number)
   {

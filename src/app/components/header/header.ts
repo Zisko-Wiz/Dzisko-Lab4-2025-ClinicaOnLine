@@ -26,13 +26,16 @@ export class Header implements OnInit, OnDestroy
 
   ngOnInit(): void
   {
+    this.signInService.especialidades = "";
     this.getUser();
 
     this.signInService.getUser()
     .then( () => {this.signInService.getUsuario()
       .then( () => {this.signInService.getEspecialidades()
-        .then( () => {this.signInService.getAvatarUrl()
-        })
+        .then( () => {this.signInService.getHorarios()
+          .then( () => {this.signInService.getAvatarUrl()
+         })
+       })
       })
     })
     ;
