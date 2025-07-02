@@ -9,6 +9,7 @@
         {
             <li style="float:right"><button (click)="logOut()">Salir</button></li>
             <li style="float:right"><button routerLink="/mi-perfil">Mi Perfil</button></li>
+            <li style="float:right"><button routerLink="/turnos">Turnos</button></li>
             @if (this.signInService.userRole == "administrador")
             {
                 <li style="float: right;"><button routerLink="/usuarios">Usuarios</button></li>

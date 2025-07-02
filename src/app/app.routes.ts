@@ -37,6 +37,10 @@ export const routes: Routes = [
     },
     {
         path: 'turnos',
+        loadComponent: () => import('./components/menu-turnos/menu-turnos').then(c => c.MenuTurnos)
+    },
+    {
+        path: 'solicitar-turno',
         loadComponent: () => import('./components/turnos/turnos').then(c => c.Turnos)
     },
     {

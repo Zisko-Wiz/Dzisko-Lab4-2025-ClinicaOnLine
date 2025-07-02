@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { AfterContentInit, AfterViewInit, Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { SupaService } from '../../services/supa.service';
 import { Especialidad } from '../../models/especialidad.models';
 import { Header } from '../header/header';
@@ -9,21 +9,32 @@ import { SigninService } from '../../services/signin.service';
 import { DateTime, Duration, Interval } from 'luxon'
 import { Turno } from '../../models/turno';
 import { MatSelectModule } from '@angular/material/select';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatButtonModule } from '@angular/material/button';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { Usuario } from '../../models/usuario.models';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-turnos',
   imports: [
     Header,
     MatTooltipModule,
-    MatSelectModule
+    MatSelectModule,
+    MatProgressSpinnerModule,
+    MatButtonModule,
+    ReactiveFormsModule,
+    MatInputModule
   ],
   templateUrl: './turnos.html',
   styleUrl: './turnos.scss'
 })
-export class Turnos implements OnInit, OnDestroy
+export class Turnos implements OnInit, OnDestroy, AfterViewInit, AfterContentInit
 {
   private supabaseService = inject(SupaService);
   private signInService = inject(SigninService);
+  private router = inject(Router);
   private horariosSubscription?: Subscription;
   protected especialidades :Especialidad[] = [];
   protected especialidadEscogida: string = "";
@@ -34,16 +45,52 @@ export class Turnos implements OnInit, OnDestroy
   protected horariosCargados: boolean = false;
   protected horarios?: Horario[];
   protected proximosDias?: any[];
-  protected turnosSacados?: Turno[];
+  protected turnosSacados: Turno[] = [];
   protected horariosDelEspecialista: any[] = [];
+  protected loading : boolean = true;
+  paciente = new FormControl("", [Validators.required]);
+  protected fechaSeleccionada: string = "";
+  protected isAdmin: boolean = false;
+  protected pacientes?: Usuario[];
+  protected pacienteEscogido: string | undefined = "";
 
   ngOnInit(): void
   {
-    this.getEspecialidades();  
-    this.setProximosDias();
+    this.signInService.getUser()
+    .then( () => 
+      {this.signInService.getUsuario()
+        .then( () => 
+        {
+          this.signInService.getRole();
+        })
+          .then( () => 
+          {
+            if (this.signInService.userRole == "administrador")
+            {
+              this.getPacientes();
+            } else {
+              
+              this.pacienteEscogido = this.signInService.usuario?.email;
+            }
+          })
+      })
 
-    this.horariosSubscription = this.signInService.horarioEmitter.subscribe(
-    {
+
+    // this.signInService.getUser().then(
+    //   () => {
+        
+    //     if (this.signInService.userRole == "administrador")
+    //     {
+    //       this.getPacientes();
+    //     } else {
+          
+    //       this.pacienteEscogido = this.signInService.usuario?.email;
+    //     }
+      
+    //   })
+
+    this.horariosSubscription = this.signInService.horarioEmitter.subscribe
+    ({
       next: (data: Horario[]) =>
       {
         if (data != undefined)
@@ -53,6 +100,10 @@ export class Turnos implements OnInit, OnDestroy
       }
     });
 
+      
+
+    this.getEspecialidades();  
+    this.setProximosDias();
   }
 
   ngOnDestroy(): void
@@ -60,10 +111,20 @@ export class Turnos implements OnInit, OnDestroy
     this.horariosSubscription?.unsubscribe();   
   }
 
+  ngAfterViewInit(): void
+  {
+    this.loading = false;  
+  }
+
+  ngAfterContentInit(): void
+  {
+    this.loading = false;  
+  }
+
   setProximosDias()
   {
-    let now = DateTime.now().startOf('day').plus({ hours: 11}).setZone('America/Argentina/Buenos_Aires');
-    let later = now.plus({ days: 16 }).setZone('America/Argentina/Buenos_Aires');
+    let now = DateTime.now().startOf('day').plus({ hours: 8});
+    let later = now.plus({ days: 16 });
     let i = Interval.fromDateTimes(now, later);
 
     let d = Duration.fromObject({ days: 1});
@@ -74,15 +135,11 @@ export class Turnos implements OnInit, OnDestroy
 
     for (let index = 0; index < days.length; index++)
     {
-      // console.log(days[index].splitAt(days[index].end!.minus({hour: 13, minute:30}))[0].toFormat(
-      //   'dd/MM HH:mm'
-      // ));
-      
       hor.push(days[index].splitAt(days[index].end!.minus({hour: 13, minute:30}))[0]);
     }
 
     this.proximosDias = hor;
-    
+    this.loading = false;
   }
 
   getTurnosSacados(emailEsp: string)
@@ -99,6 +156,7 @@ export class Turnos implements OnInit, OnDestroy
         } else {
           this.turnosSacados = data as Turno[];
           this.setHorariosDisponibles();
+          
         }
       }
     )
@@ -120,6 +178,24 @@ export class Turnos implements OnInit, OnDestroy
     })
   }
 
+  protected async getPacientes()
+  {
+    return this.supabaseService.supabase.from('users')
+    .select()
+    .eq('role', 'paciente')
+    .then(
+      ( {data, error} ) => { 
+        if (error)
+        {
+          console.log(error.message);
+        } else {
+          this.pacientes = data;
+          this.isAdmin = true;
+        }
+      }
+    )
+  }
+
   protected getEspecialistas()
   {
     this.supabaseService.supabase.from('especialidades')
@@ -134,6 +210,7 @@ export class Turnos implements OnInit, OnDestroy
         {
           this.especialistas = data[0];
           this.especialistasCargados = true;
+          this.loading = false;
         } else {
           console.log(error.message);
         }
@@ -156,16 +233,98 @@ export class Turnos implements OnInit, OnDestroy
     return this.signInService.getHorariosByEmail(especialista).then( () => {this.horariosCargados = true;})
   }
 
+  protected escogerPaciente(emailPaciente: string)
+  {
+    this.pacienteEscogido = emailPaciente;
+    this.isAdmin = false;
+  }
+
   protected escogerEspecialidad(esp: string)
   {
+    this.loading = true;
     this.especialidadEscogida = esp;
     this.getEspecialistas();
   }
 
   protected escogerEspecialista(esp: string)
   {
+    this.loading = true;
     this.especialistaEscogido = esp;
     this.getTurnos(esp).then( () => {this.getTurnosSacados(esp);});
+  }
+
+  protected isHorarioDisponible(intervalo: any) : boolean
+  {
+    var t = intervalo.start.toISO();
+    var dia = intervalo.start.weekday;
+    var hora = DateTime.fromFormat(intervalo.start.toFormat('HH:mm'), 'HH:mm')
+
+    if (this.turnosSacados?.length == 0)
+    {
+      return true;  
+    }
+
+    for (let index = 0; index < this.horarios!.length; index++)
+    {
+      var horaInicial = DateTime.fromFormat(this.horarios![index].hora_inicial,'HH:mm');
+      var horaFinal = DateTime.fromFormat(this.horarios![index].hora_final,'HH:mm');
+      var horInterval = Interval.fromDateTimes(horaInicial, horaFinal);
+
+      switch (this.horarios![index].dia)
+      {
+        case 'lunes':
+          if (dia == 1 && !horInterval.contains(hora))
+          {
+            return false;
+          }
+          break;
+
+        case 'martes':
+          if (dia == 2 && !horInterval.contains(hora))
+          {
+            return false;
+          }
+          break;
+
+        case 'miércoles':
+          if (dia == 3 && !horInterval.contains(hora))
+          {
+            return false;
+          }
+          break;
+
+        case 'jueves':
+          if (dia == 4 && !horInterval.contains(hora))
+          {
+            return false;
+          }
+          break;
+
+        case 'viernes':
+          if (dia == 5 && !horInterval.contains(hora))
+          {
+            return false;
+          }
+          break;
+
+        case 'sábado':
+          if (dia == 6 && !horInterval.contains(hora))
+          {
+            return false;
+          }
+          break;
+      }
+    }
+
+    for (let index = 0; index < this.turnosSacados.length; index++)
+    {
+      if (t == `${this.turnosSacados[index].fecha}.000+00:00`)
+      {
+        return false;  
+      }
+    }
+
+    return true;
   }
 
   setHorariosDisponibles()
@@ -229,7 +388,23 @@ export class Turnos implements OnInit, OnDestroy
       this.horariosDelEspecialista.push(diasDelEspecialista[index].splitBy(d))
     }
 
-    console.log(this.horariosDelEspecialista);
+    this.loading = false;
     
+  }
+
+  insertTurno()
+  {
+    this.loading = true;
+    this.supabaseService.insertTurno(this.fechaSeleccionada, this.especialistaEscogido, this.pacienteEscogido!, this.especialidadEscogida)
+    .then(
+      ( {data, error}) => {
+        if (error)
+        {
+          console.log(error.message);            
+        } else {
+          this.router.navigate(["home"])
+        }
+      }
+    )
   }
 }

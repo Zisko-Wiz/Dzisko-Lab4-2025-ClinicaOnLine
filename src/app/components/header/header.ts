@@ -37,8 +37,7 @@ export class Header implements OnInit, OnDestroy
          })
        })
       })
-    })
-    ;
+    });
   }
 
   ngOnDestroy(): void

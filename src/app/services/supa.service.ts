@@ -38,6 +38,17 @@ export class SupaService
 
   }
 
+  async insertTurno(fecha: string, emailEsp: string, emailPaciente: string, especialidad: string)
+  {
+    return this.supabase.from('turnos').insert(
+    {
+      fecha: fecha,
+      email_esp: emailEsp,
+      email_paciente: emailPaciente,
+      especialidad: especialidad
+    })
+  }
+
   updateHorario(email:string|undefined, dia: string, horaInicial:string, horaFinal:string)
   {
     this.supabase.from('horarios').update(

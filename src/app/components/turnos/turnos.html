@@ -2,8 +2,30 @@
 
 <div class="container">
 
+    @if (this.loading)
+    {
+        <div class="spinner">
+            <mat-spinner mode="indeterminate"></mat-spinner>
+        </div>
+    }
+
     <div  class="menu">
-        @if (this.especialidadEscogida == "" && this.especialistaEscogido == "")
+
+        @if (this.isAdmin)
+        {
+            @for (paciente of this.pacientes; track paciente)
+            {
+                <div class="esp-menu">
+                    <h1>{{paciente.firstname}} {{paciente.surname}}</h1>
+                    <div class="icon-btn" (click)="this.escogerPaciente(paciente.email)">
+                        <img class="icon" src="{{this.getAvatarUrl(paciente.email)}}">
+                    </div>
+                </div>
+            }
+        }
+        
+
+        @if (this.pacienteEscogido != "" && this.especialidadEscogida == "" && this.especialistaEscogido == "")
         {
             @for (esp of this.especialidades; track esp)
             {
@@ -15,42 +37,42 @@
                             <img class="icon" src="heart-beats.png">
                         </div>
                     }
-    
+
                     @case ("oftalmología")
                     {
                         <div class="icon-btn" (click)="this.escogerEspecialidad(esp.nombre)" matTooltip="oftalmología" matTooltipPosition="above">
                             <img class="icon" src="eye.png">
                         </div>
                     }
-    
+
                     @case ("otorrinolaringología")
                     {
                         <div class="icon-btn" (click)="this.escogerEspecialidad(esp.nombre)" matTooltip="otorrinolaringología" matTooltipPosition="above">
                             <img class="icon" src="ear.png">
                         </div>
                     }
-    
+
                     @case ("neurología")
                     {
                         <div class="icon-btn" (click)="this.escogerEspecialidad(esp.nombre)" matTooltip="neurología" matTooltipPosition="above">
                             <img class="icon" src="brain.png">
                         </div>
                     }
-    
+
                     @case ("traumatología")
                     {
                         <div class="icon-btn" (click)="this.escogerEspecialidad(esp.nombre)" matTooltip="traumatología" matTooltipPosition="above">
                             <img class="icon" src="wound.png">
                         </div>
                     }
-    
+
                     @case ("gastroenterología")
                     {
                         <div class="icon-btn" (click)="this.escogerEspecialidad(esp.nombre)" matTooltip="gastroenterología" matTooltipPosition="above">
                             <img class="icon" src="stomach.png">
                         </div>
                     }
-    
+
                     @default
                     {
                         <div class="icon-btn" (click)="this.escogerEspecialidad(esp.nombre)" matTooltip="{{esp.nombre}}" matTooltipPosition="above">
@@ -82,17 +104,21 @@
                 <div class="esp-menu">
                     <div class="turno-btn">
                         <h1>{{this.horariosDelEspecialista[$index][0].start.toFormat('dd/MM')}}</h1>
-                        <mat-select class="custom-select" placeholder="00:00">
+                        <mat-select [(value)]="this.fechaSeleccionada" class="custom-select" placeholder="00:00">
                             @for (item of this.horariosDelEspecialista[$index]; track item)
                             {
-                                <mat-option [value]="item.start.toFormat('HH:mm')" >{{item.start.toFormat('HH:mm')}}</mat-option>
+                                @if (this.isHorarioDisponible(item))
+                                {
+                                    <mat-option [value]="item.start.toISO()" >{{item.start.toFormat('HH:mm')}}</mat-option>
+                                }
                             }
                         </mat-select>
+                        <button type="button" mat-flat-button (click)="this.insertTurno()">Tomar turno</button>
                     </div>
                 </div>
             }
         }
-    </div>
 
+    </div>
 
 </div>

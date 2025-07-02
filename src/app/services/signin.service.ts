@@ -27,7 +27,7 @@ export class SigninService {
   public async getUser()
   {
     return this.supaService.supabase.auth.getUser().then(({data}) =>
-    { 
+    {       
       if (data.user != null)
       {
         this.user = data.user;
@@ -72,7 +72,7 @@ export class SigninService {
 
   async getUsuario()
   {
-    if (this.user != undefined)
+    if (this.user)
     {
       return this.supaService.supabase.from('users')
       .select()
