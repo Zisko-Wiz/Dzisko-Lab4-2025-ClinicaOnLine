@@ -109,6 +109,7 @@ export class SigninService {
           {
             console.log(error);
           } else {
+            this.especialidades = "";
               for (let index = 0; index < data[0].especialidades.length; index++)
               {
                 if (index == 0)
@@ -159,6 +160,23 @@ export class SigninService {
         }
       )
     }
+  }
+
+  async getHorariosByEmail(email: string)
+  {
+    return this.supaService.supabase.from('horarios')
+    .select()
+    .eq("email_esp", email)
+    .then(
+      ({data, error}) => {
+        if (error)
+        {
+          console.log(error.message);
+        } else {
+          this.horarioEmitter.emit(data)
+        }
+      }
+    )
   }
 
     

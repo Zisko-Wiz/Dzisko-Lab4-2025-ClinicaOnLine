@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { canMatchUsersGuard } from './guards/can-match-users-guard';
+import { canMatchPerfilGuard } from './guards/can-match-perfil-guard';
 
 export const routes: Routes = [
     
@@ -31,7 +32,12 @@ export const routes: Routes = [
     },
     {
         path: 'mi-perfil',
-        loadComponent: () => import('./components/perfil/perfil').then(c => c.Perfil)
+        loadComponent: () => import('./components/perfil/perfil').then(c => c.Perfil),
+        canMatch: [canMatchPerfilGuard]
+    },
+    {
+        path: 'turnos',
+        loadComponent: () => import('./components/turnos/turnos').then(c => c.Turnos)
     },
     {
         path: '**',

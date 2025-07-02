@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { Header } from '../header/header';
 import { MatButtonModule } from '@angular/material/button';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -22,7 +22,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './perfil.html',
   styleUrl: './perfil.scss'
 })
-export class Perfil implements OnInit
+export class Perfil implements OnInit, OnDestroy
 {
   private horariosSubscription?: Subscription;
   protected horariosCargados?: Horario[];
@@ -85,53 +85,57 @@ export class Perfil implements OnInit
   ngOnInit(): void
   {
     this.horariosSubscription = this.signInService.horarioEmitter.subscribe(
+    {
+      next: (data: Horario[]) =>
       {
-        next: (data: Horario[]) =>
+        if (data != undefined)
         {
-          if (data != undefined)
+          for (let index = 0; index < data.length; index++)
           {
-            for (let index = 0; index < data.length; index++)
+            switch (data[index].dia)
             {
-              switch (data[index].dia)
-              {
-                case "lunes":
-                  this.perfilForm.controls.lunes1.setValue(data[index].hora_inicial);
-                  this.perfilForm.controls.lunes2.setValue(data[index].hora_final);
-                  break;
-
-                case "martes":
-                this.perfilForm.controls.martes1.setValue(data[index].hora_inicial);
-                this.perfilForm.controls.martes2.setValue(data[index].hora_final);
+              case "lunes":
+                this.perfilForm.controls.lunes1.setValue(data[index].hora_inicial);
+                this.perfilForm.controls.lunes2.setValue(data[index].hora_final);
                 break;
 
-                case "miércoles":
-                  this.perfilForm.controls.miercoles1.setValue(data[index].hora_inicial);
-                  this.perfilForm.controls.miercoles2.setValue(data[index].hora_final);
-                  break;
+              case "martes":
+              this.perfilForm.controls.martes1.setValue(data[index].hora_inicial);
+              this.perfilForm.controls.martes2.setValue(data[index].hora_final);
+              break;
 
-                case "jueves":
-                  this.perfilForm.controls.jueves1.setValue(data[index].hora_inicial);
-                  this.perfilForm.controls.jueves2.setValue(data[index].hora_final);
-                  break;
+              case "miércoles":
+                this.perfilForm.controls.miercoles1.setValue(data[index].hora_inicial);
+                this.perfilForm.controls.miercoles2.setValue(data[index].hora_final);
+                break;
 
-                case "viernes":
-                  this.perfilForm.controls.viernes1.setValue(data[index].hora_inicial);
-                  this.perfilForm.controls.viernes2.setValue(data[index].hora_final);
-                  break;
+              case "jueves":
+                this.perfilForm.controls.jueves1.setValue(data[index].hora_inicial);
+                this.perfilForm.controls.jueves2.setValue(data[index].hora_final);
+                break;
 
-                case "sábado":
-                  this.perfilForm.controls.sabado1.setValue(data[index].hora_inicial);
-                  this.perfilForm.controls.sabado2.setValue(data[index].hora_final);
-                  break;
-              }
+              case "viernes":
+                this.perfilForm.controls.viernes1.setValue(data[index].hora_inicial);
+                this.perfilForm.controls.viernes2.setValue(data[index].hora_final);
+                break;
+
+              case "sábado":
+                this.perfilForm.controls.sabado1.setValue(data[index].hora_inicial);
+                this.perfilForm.controls.sabado2.setValue(data[index].hora_final);
+                break;
             }
-
-            this.perfilForm.updateValueAndValidity();
-
           }
+
+          this.perfilForm.updateValueAndValidity();
+
         }
       }
-    );
+    });
+  }
+
+  ngOnDestroy(): void
+  {
+    this.horariosSubscription?.unsubscribe();  
   }
 
   protected cargarNuevosHorarios()
