@@ -44,6 +44,10 @@ export const routes: Routes = [
         loadComponent: () => import('./components/turnos/turnos').then(c => c.Turnos)
     },
     {
+        path: 'todos-turnos',
+        loadComponent: () => import('./components/todos-turnos/todos-turnos').then(c => c.TodosTurnos)
+    },
+    {
         path: '**',
         loadComponent: () => import('./components/error-page/error-page').then(c => c.ErrorPage)
     }

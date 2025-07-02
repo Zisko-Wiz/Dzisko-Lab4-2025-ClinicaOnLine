@@ -8,7 +8,7 @@ export const canMatchPerfilGuard: CanMatchFn = (route, segments) =>
   return signIn.getUsuario().then( () => {
     if (signIn.usuario != undefined)
     {
-      return true
+      return true;
     } else {
       return false;
     }

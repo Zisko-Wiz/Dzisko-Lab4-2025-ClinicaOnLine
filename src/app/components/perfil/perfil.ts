@@ -8,6 +8,7 @@ import { SigninService } from '../../services/signin.service';
 import { SupaService } from '../../services/supa.service';
 import { Horario } from '../../models/horario';
 import { Subscription } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-perfil',
@@ -24,6 +25,7 @@ import { Subscription } from 'rxjs';
 })
 export class Perfil implements OnInit, OnDestroy
 {
+  private snackBar = inject(MatSnackBar);
   private horariosSubscription?: Subscription;
   protected horariosCargados?: Horario[];
   protected signInService = inject(SigninService);
@@ -142,32 +144,38 @@ export class Perfil implements OnInit, OnDestroy
   {
     if (this.perfilForm.get('lunes1')?.value != null && this.perfilForm.get('lunes2')?.value != null)
     {
-      this.supabaseService.insertHorarios(this.signInService.usuario?.email, "lunes", this.perfilForm.get('lunes1')?.value,this.perfilForm.get('lunes2')?.value);
+      this.supabaseService.insertHorarios(this.signInService.usuario?.email, "lunes", this.perfilForm.get('lunes1')?.value,this.perfilForm.get('lunes2')?.value)
+      .then(()=>{this.openSnackBar()});
     }
 
     if (this.perfilForm.get('martes1')?.value != null && this.perfilForm.get('martes2')?.value != null)
     {
-      this.supabaseService.insertHorarios(this.signInService.usuario?.email, "martes", this.perfilForm.get('martes1')?.value,this.perfilForm.get('martes2')?.value);
+      this.supabaseService.insertHorarios(this.signInService.usuario?.email, "martes", this.perfilForm.get('martes1')?.value,this.perfilForm.get('martes2')?.value)
+      .then(()=>{this.openSnackBar()});
     }
 
     if (this.perfilForm.get('miercoles1')?.value != null && this.perfilForm.get('miercoles2')?.value != null)
     {
-      this.supabaseService.insertHorarios(this.signInService.usuario?.email, "miércoles", this.perfilForm.get('miercoles1')?.value,this.perfilForm.get('miercoles2')?.value);
+      this.supabaseService.insertHorarios(this.signInService.usuario?.email, "miércoles", this.perfilForm.get('miercoles1')?.value,this.perfilForm.get('miercoles2')?.value)
+      .then(()=>{this.openSnackBar()});
     }
 
     if (this.perfilForm.get('jueves1')?.value != null && this.perfilForm.get('jueves2')?.value != null)
     {
-      this.supabaseService.insertHorarios(this.signInService.usuario?.email, "jueves", this.perfilForm.get('jueves1')?.value,this.perfilForm.get('jueves2')?.value);
+      this.supabaseService.insertHorarios(this.signInService.usuario?.email, "jueves", this.perfilForm.get('jueves1')?.value,this.perfilForm.get('jueves2')?.value)
+      .then(()=>{this.openSnackBar()});
     }
 
     if (this.perfilForm.get('viernes1')?.value != null && this.perfilForm.get('viernes2')?.value != null)
     {
-      this.supabaseService.insertHorarios(this.signInService.usuario?.email, "viernes", this.perfilForm.get('viernes1')?.value,this.perfilForm.get('viernes2')?.value);
+      this.supabaseService.insertHorarios(this.signInService.usuario?.email, "viernes", this.perfilForm.get('viernes1')?.value,this.perfilForm.get('viernes2')?.value)
+      .then(()=>{this.openSnackBar()});
     }
 
     if (this.perfilForm.get('sabado1')?.value != null && this.perfilForm.get('sabado2')?.value != null)
     {
-      this.supabaseService.insertHorarios(this.signInService.usuario?.email, "sábado", this.perfilForm.get('sabado1')?.value,this.perfilForm.get('sabado2')?.value);
+      this.supabaseService.insertHorarios(this.signInService.usuario?.email, "sábado", this.perfilForm.get('sabado1')?.value,this.perfilForm.get('sabado2')?.value)
+      .then(()=>{this.openSnackBar()});
     }
   }
 
@@ -214,6 +222,9 @@ export class Perfil implements OnInit, OnDestroy
     }
   }
 
-
+  openSnackBar() 
+  {
+    this.snackBar.open("Horarios Cargados", "Aceptar");
+  }
 
 }

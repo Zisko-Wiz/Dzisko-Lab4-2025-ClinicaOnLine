@@ -1,0 +1,100 @@
+<app-header></app-header>
+
+<div hover class="container" [style.pointer-events]=" (!this.showSpinner) ? 'auto' : 'none' ">
+
+  @if (this.showSpinner)
+  {
+    <div class="spinner">
+      <mat-spinner mode="indeterminate"></mat-spinner>
+    </div>
+  }
+  <div class="options">
+    <mat-form-field class="example-full-width">
+    <input class="cutom-input" matInput (keyup)="applyFilter($event)" placeholder="Buscar" #input>
+  </mat-form-field>
+    
+  </div>
+  
+
+  <div class="users-table">
+    <div class="mat-elevation-z2">
+      <table mat-table class="full-width-table" matSort aria-label="Users">
+
+        <ng-container matColumnDef="fecha">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</th>
+          <td mat-cell *matCellDef="let row">{{row.fecha | date: 'dd/MM/yyyy HH:mm'}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="email_esp">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Especialista</th>
+          <td mat-cell *matCellDef="let row">{{row.email_esp}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="firstname">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
+          <td mat-cell *matCellDef="let row">{{row.firstname}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="surname">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Apellido</th>
+          <td mat-cell *matCellDef="let row">{{row.surname}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="especialidad">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Especialidad</th>
+          <td mat-cell *matCellDef="let row">{{row.especialidad}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="email_paciente">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Paciente</th>
+          <td mat-cell *matCellDef="let row">{{row.email_paciente | nombre: this.todosUsuarios}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="estado">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
+          <td mat-cell *matCellDef="let row">{{row.estado}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef>Acción</th>
+          <td mat-cell *matCellDef="let row; let i = index">
+            @if (row.estado == 'pendiente')
+            {
+              <button mat-raised-button
+              (click)="onActionButtonClick($event, row, i)"
+              (focusout)="this.refresh()"
+              [style.pointer-events]=" ( (row.comentario == null) ) ? 'none' : 'auto' "
+              >Cancelar</button>
+            }
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="comment">
+          <th mat-header-cell *matHeaderCellDef>Motivo</th>
+          <td mat-cell *matCellDef="let row; let i = index">
+            @if (row.estado == 'pendiente')
+            {
+              <textarea [(ngModel)]="row.comentario"></textarea>
+            } @else if (row.estado == 'cancelado')
+            {
+              {{row.comentario}}
+            }
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+      </table>
+    
+      <mat-paginator #paginator
+          [length]="dataSource.data.length"
+          [pageIndex]="0"
+          [pageSize]="10"
+          aria-label="Select page">
+      </mat-paginator>
+    </div>
+  </div>
+
+</div>
+

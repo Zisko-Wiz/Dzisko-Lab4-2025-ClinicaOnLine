@@ -15,12 +15,12 @@ export class SupaService
     return this.supabase.storage.from('profile-pictures').upload(filePath, file)
   }
 
-  insertHorarios(email:string|undefined, dia: string, horaInicial:string, horaFinal:string )
+  async insertHorarios(email:string|undefined, dia: string, horaInicial:string, horaFinal:string )
   {
     
     if (typeof email == "string")
     {
-      this.supabase.from('horarios').insert
+      return this.supabase.from('horarios').insert
       ({
         email_esp: email,
         dia: dia,
@@ -48,7 +48,7 @@ export class SupaService
       especialidad: especialidad
     })
   }
-
+  
   updateHorario(email:string|undefined, dia: string, horaInicial:string, horaFinal:string)
   {
     this.supabase.from('horarios').update(
