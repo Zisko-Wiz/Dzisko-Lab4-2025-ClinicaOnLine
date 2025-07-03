@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, ChildrenOutletContexts, RouterOutlet } from '@angular/router';
 import { slideInAnimation, slideInAnimation2 } from './animate';
+import 'animate.css';
+
 
 @Component({
   selector: 'app-root',

@@ -36,3 +36,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   text-align: center;
   justify-content:center;
 }
+
+:root {
+  --animate-duration: 1s;
+  --animate-delay: 0.7s;
+}
