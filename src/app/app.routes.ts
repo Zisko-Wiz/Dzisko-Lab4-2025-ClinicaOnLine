@@ -13,7 +13,6 @@ export const routes: Routes = [
     {
         path: 'home',
         loadComponent: () => import('./components/home/home').then(c => c.Home),
-        data: {animation: 'slideUpAnimation'}
     },
     {
         path: 'registro',
@@ -23,7 +22,6 @@ export const routes: Routes = [
     {
         path: 'ingreso',
         loadComponent: () => import('./components/login/login').then(c => c.Login),
-        data: {animation: 'slideInAnimation'}
     },
     {
         path: 'cuenta-creada',

@@ -1,0 +1,1 @@
+import{Ra as n}from"./chunk-RZXA2LSZ.js";var m=class e{transform(i,r){let t=r.findIndex(o=>o.email==i);return`${r[t].firstname} ${r[t].surname}`}static \u0275fac=function(r){return new(r||e)};static \u0275pipe=n({name:"nombre",type:e,pure:!0})};export{m as a};

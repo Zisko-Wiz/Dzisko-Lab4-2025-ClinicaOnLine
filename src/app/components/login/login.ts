@@ -5,6 +5,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { Router, RouterLink } from '@angular/router';
 import { SupaService } from '../../services/supa.service';
+import 'animate.css';
+
 
 @Component({
   selector: 'app-login',

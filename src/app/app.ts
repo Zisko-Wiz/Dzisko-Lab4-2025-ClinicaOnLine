@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, ChildrenOutletContexts, RouterOutlet } from '@angular/router';
-import { slideInAnimation } from './animate';
+import { slideInAnimation, slideInAnimation2 } from './animate';
 
 @Component({
   selector: 'app-root',
@@ -10,6 +10,7 @@ import { slideInAnimation } from './animate';
   animations:
   [
     slideInAnimation,
+    slideInAnimation2
   ]
 })
 export class App {
