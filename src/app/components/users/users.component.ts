@@ -9,6 +9,8 @@ import { Usuario } from '../../models/usuario.models';
 import { SupaService } from '../../services/supa.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterLink } from '@angular/router';
+import * as XLSX from 'xlsx';
+const { read, utils } = XLSX;
 
 @Component({
   selector: 'app-users',
@@ -63,8 +65,6 @@ export class UsersComponent implements AfterViewInit, OnInit {
         {
           this.dataSource = new UsersDataSource(data);
           this.refresh();
-          
-          
         }
       }
     )
@@ -101,6 +101,35 @@ export class UsersComponent implements AfterViewInit, OnInit {
     .eq('email', email).then(
       () => { this.showSpinner = false;}
     )
+  }
+
+  protected descargarHojaCalculo()
+  {
+    var worksheet = XLSX.utils.json_to_sheet(this.dataSource.data);
+    XLSX.utils.sheet_add_aoa(worksheet, [["ID", "Fecha_Creación", 'Nombre', 'Apellido', 'DNI', 'Edad', 'Verificación', 'Rol', 'Email', 'Obra Social']], { origin: "A1" })
+
+    if(!worksheet["!cols"]) worksheet["!cols"] = [];
+    if(!worksheet["!cols"][1]) worksheet["!cols"][1] = {wch: 8};
+    if(!worksheet["!cols"][6]) worksheet["!cols"][6] = {wch: 8};
+    if(!worksheet["!cols"][2]) worksheet["!cols"][2] = {wch: 8};
+    if(!worksheet["!cols"][3]) worksheet["!cols"][3] = {wch: 8};
+    if(!worksheet["!cols"][7]) worksheet["!cols"][7] = {wch: 8};
+    if(!worksheet["!cols"][8]) worksheet["!cols"][8] = {wch: 8};
+    if(!worksheet["!cols"][9]) worksheet["!cols"][9] = {wch: 8};
+    if(!worksheet["!cols"][4]) worksheet["!cols"][4] = {wch: 8};
+    worksheet["!cols"][4].wpx = 90;
+    worksheet["!cols"][9].wpx = 87;
+    worksheet["!cols"][8].wpx = 227;
+    worksheet["!cols"][7].wpx = 105;
+    worksheet["!cols"][3].wpx = 95;
+    worksheet["!cols"][2].wpx = 95;
+    worksheet["!cols"][1].wpx = 200;
+    worksheet["!cols"][6].wpx = 88;
+
+
+    var workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Usr");
+    XLSX.writeFile(workbook, "Usuarios.xlsx", { compression: true });
   }
   
 }
