@@ -8,9 +8,6 @@ export const canMatchUsersGuard: CanMatchFn = (route, segments) => {
   let router = inject(Router);
   signIn.getRole();
 
-  console.log(signIn.userRole);
-  
-
   switch (signIn.userRole)
   {
     case 'administrador':
