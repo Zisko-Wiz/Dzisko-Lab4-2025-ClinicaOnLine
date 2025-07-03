@@ -25,9 +25,68 @@
           <td mat-cell *matCellDef="let row">{{row.fecha | date: 'dd/MM/yyyy HH:mm'}}</td>
         </ng-container>
 
-        <ng-container matColumnDef="email_esp">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Especialista</th>
-          <td mat-cell *matCellDef="let row">{{row.email_esp}}</td>
+        <ng-container matColumnDef="especialidad">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Especialidad</th>
+          <td mat-cell *matCellDef="let row">{{row.especialidad}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="estado">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
+          <td mat-cell *matCellDef="let row" appRemarcar>{{row.estado.toUpperCase()}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="rechazar">
+          <th mat-header-cell *matHeaderCellDef>Cancelar</th>
+          <td mat-cell *matCellDef="let row; let i = index">
+            @if (row.estado == 'pendiente' || row.estado == 'aceptado')
+            {
+              <button mat-raised-button
+              (click)="onActionButtonClick($event, row, 'cancelado')"
+              (focusout)="this.refresh()"
+              [style.pointer-events]=" ( (row.comentario == null || row.comentario == '') ) ? 'none' : 'auto' "
+              >Cancelar</button>
+            }
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="finalizar">
+          <th mat-header-cell *matHeaderCellDef>Calificar</th>
+          <td mat-cell *matCellDef="let row; let i = index">
+            @if (row.estado == 'finalizado' && row.calificacion == null)
+            {
+              <button mat-raised-button
+              (click)="onCalificarButtonClick($event, row)"
+              (focusout)="this.refresh()"
+              [style.pointer-events]=" ( (row.calificacion== null || row.calificacion== '') ) ? 'none' : 'auto' "
+              >Calificar</button>
+            }
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="comment">
+          <th mat-header-cell *matHeaderCellDef>Comentario</th>
+          <td mat-cell *matCellDef="let row; let i = index">
+            @if (row.estado == 'pendiente' || row.estado == 'aceptado')
+            {
+              <textarea [(ngModel)]="row.comentario"></textarea>
+            } @else
+            {
+              {{row.comentario}}
+            }
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="calificar">
+          <th mat-header-cell *matHeaderCellDef>Calificación</th>
+          <td mat-cell *matCellDef="let row; let i = index">
+            @if (row.estado == 'finalizado' && row.calificacion == null)
+            {
+              <textarea [(ngModel)]="row.calificacion"></textarea>
+            } @else
+            {
+              {{row.calificacion}}
+            }
+          </td>
         </ng-container>
 
         <ng-container matColumnDef="firstname">
@@ -38,48 +97,6 @@
         <ng-container matColumnDef="surname">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Apellido</th>
           <td mat-cell *matCellDef="let row">{{row.surname}}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="especialidad">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Especialidad</th>
-          <td mat-cell *matCellDef="let row">{{row.especialidad}}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="email_paciente">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Paciente</th>
-          <td mat-cell *matCellDef="let row">{{row.email_paciente | nombre: this.todosUsuarios}}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="estado">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
-          <td mat-cell *matCellDef="let row" appRemarcar>{{row.estado.toUpperCase()}}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="action">
-          <th mat-header-cell *matHeaderCellDef>Acción</th>
-          <td mat-cell *matCellDef="let row; let i = index">
-            @if (row.estado == 'pendiente')
-            {
-              <button mat-raised-button
-              (click)="onActionButtonClick($event, row, i)"
-              (focusout)="this.refresh()"
-              [style.pointer-events]=" ( (row.comentario == null || row.comentario == '') ) ? 'none' : 'auto' "
-              >Cancelar</button>
-            }
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="comment">
-          <th mat-header-cell *matHeaderCellDef>Motivo</th>
-          <td mat-cell *matCellDef="let row; let i = index">
-            @if (row.estado == 'pendiente')
-            {
-              <textarea [(ngModel)]="row.comentario"></textarea>
-            } @else if (row.estado == 'cancelado')
-            {
-              {{row.comentario}}
-            }
-          </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

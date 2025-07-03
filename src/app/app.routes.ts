@@ -45,7 +45,17 @@ export const routes: Routes = [
     },
     {
         path: 'todos-turnos',
-        loadComponent: () => import('./components/todos-turnos/todos-turnos').then(c => c.TodosTurnos)
+        loadComponent: () => import('./components/todos-turnos/todos-turnos').then(c => c.TodosTurnos),
+        canMatch: [canMatchUsersGuard]
+    },
+    {
+        path: 'mis-turnos/especialista',
+        loadComponent: () => import('./components/mis-turnos/mis-turnos').then(c => c.MisTurnos),
+        // canMatch: [canMatchPerfilGuard]
+    },
+    {
+        path: 'mis-turnos/paciente',
+        loadComponent: () => import('./components/turnos-paciente/turnos-paciente').then(c => c.TurnosPaciente)
     },
     {
         path: '**',

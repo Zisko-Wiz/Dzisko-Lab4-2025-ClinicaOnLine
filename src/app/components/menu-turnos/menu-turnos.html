@@ -1,13 +1,21 @@
 <app-header></app-header>
 
 <div class="container">
+
+    @if (this.loading)
+    {
+        <div class="spinner">
+          <mat-spinner mode="indeterminate"></mat-spinner>
+        </div>
+    }
+
     <div class="options">
         <div class="option-btn">
-            <button mat-button routerLink="/solicitar-turno">Solicitar turno</button>
+            <button mat-button (click)="this.loading = true" routerLink="/solicitar-turno">Solicitar turno</button>
         </div>
 
         <div class="option-btn">
-            <button mat-button routerLink="/todos-turnos">Mis turnos</button>
+            <button mat-button (click)="this.loading = true" routerLink="/todos-turnos">Mis turnos</button>
         </div>
     </div>
 </div>

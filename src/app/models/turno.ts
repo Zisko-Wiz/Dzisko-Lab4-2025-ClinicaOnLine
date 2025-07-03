@@ -7,6 +7,7 @@ export interface Turno
     email_paciente: string;
     estado: string;
     comentario: string;
+    calificacion: string;
     users: {firstname:string, surname:string}
 }
 
@@ -19,9 +20,10 @@ export class Turno
     estado: string;
     comentario: string;
     firstname:string;
-    surname:string
+    surname:string;
+    calificacion:string;
 
-    constructor(fecha:string, emailEsp:string, emailPaciente:string, especialidad:string, estado:string, comentario:string, firstname:string, surname:string)
+    constructor(fecha:string, emailEsp:string, emailPaciente:string, especialidad:string, estado:string, comentario:string, firstname:string, surname:string, calificaion:string)
     {
         this.fecha = fecha;
         this.email_esp = emailEsp;
@@ -31,6 +33,7 @@ export class Turno
         this.comentario = comentario;
         this.firstname = firstname;
         this.surname = surname;
+        this.calificacion = calificaion;
     }
 
 }
