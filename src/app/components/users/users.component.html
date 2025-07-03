@@ -12,6 +12,7 @@
   <div class="options">
     <button mat-flat-button routerLink="/registro" >Crear nuevo usuario</button>
     <button mat-flat-button (click)="this.descargarHojaCalculo()" >Descargar hoja de cálculo</button>
+    <button mat-flat-button (click)="this.descargarLogs()" >Descargar registro de Ingresos</button>
   </div>
 
   <div class="users-table">
@@ -20,37 +21,42 @@
 
         <ng-container matColumnDef="firstname">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
-          <td mat-cell *matCellDef="let row">{{row.firstname}}</td>
+          <td mat-cell *matCellDef="let row" [appRemarcarRol]="row.role">{{row.firstname}}</td>
         </ng-container>
 
         <ng-container matColumnDef="surname">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Apellido</th>
-          <td mat-cell *matCellDef="let row">{{row.surname}}</td>
+          <td mat-cell *matCellDef="let row" [appRemarcarRol]="row.role">{{row.surname}}</td>
         </ng-container>
     
         <ng-container matColumnDef="dni">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>DNI</th>
-          <td mat-cell *matCellDef="let row">{{row.dni}}</td>
+          <td mat-cell *matCellDef="let row" [appRemarcarRol]="row.role">{{row.dni}}</td>
         </ng-container>
 
         <ng-container matColumnDef="age">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Edad</th>
-          <td mat-cell *matCellDef="let row">{{row.age}}</td>
+          <td mat-cell *matCellDef="let row"[appRemarcarRol]="row.role">{{row.age}}</td>
         </ng-container>
 
         <ng-container matColumnDef="email">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Correo</th>
-          <td mat-cell *matCellDef="let row">{{row.email}}</td>
+          <td mat-cell *matCellDef="let row" [appRemarcarRol]="row.role">{{row.email}}</td>
         </ng-container>
 
         <ng-container matColumnDef="obra_social">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Obra Social</th>
-          <td mat-cell *matCellDef="let row">{{row.obra_social}}</td>
+          <td mat-cell *matCellDef="let row" [appRemarcarRol]="row.role">{{row.obra_social}}</td>
         </ng-container>
 
         <ng-container matColumnDef="verification">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Verificación</th>
-          <td mat-cell *matCellDef="let row">{{row.verification}}</td>
+          <td mat-cell *matCellDef="let row" [appVerificar]="row.verification">{{row.verification | verificacion}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="role">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Rol</th>
+          <td mat-cell *matCellDef="let row" [appRemarcarRol]="row.role">{{row.role}} </td>
         </ng-container>
 
         <ng-container matColumnDef="action">

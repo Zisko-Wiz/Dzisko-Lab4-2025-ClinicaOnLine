@@ -71,6 +71,10 @@ export const routes: Routes = [
         data: {animation: 'slideUpAnimation'}
     },
     {
+        path: 'test',
+        loadComponent: () => import('./components/test/test').then(c => c.BarChartComponent)
+    },
+    {
         path: '**',
         loadComponent: () => import('./components/error-page/error-page').then(c => c.ErrorPage),
         data: {animation: 'rotateFadeAnimation'}

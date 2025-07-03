@@ -113,7 +113,9 @@
                                 }
                             }
                         </mat-select>
-                        <button type="button" mat-flat-button (click)="this.insertTurno()">Tomar turno</button>
+                        <button type="button" mat-flat-button (click)="this.insertTurno()"
+                        [style.pointer-events]=" (this.fechaSeleccionada == '') ? 'none' : 'auto' "
+                        >Tomar turno</button>
                     </div>
                 </div>
             }

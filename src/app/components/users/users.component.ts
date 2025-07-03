@@ -10,6 +10,11 @@ import { SupaService } from '../../services/supa.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterLink } from '@angular/router';
 import * as XLSX from 'xlsx';
+import { VerificacionPipe } from '../../pipes/verificacion-pipe';
+import { Remarcar } from '../../directives/remarcar';
+import { Verificar } from '../../directives/verificar';
+import { RemarcarRol } from '../../directives/remarcar-rol';
+import { BaseChartDirective } from 'ng2-charts';
 const { read, utils } = XLSX;
 
 @Component({
@@ -23,7 +28,10 @@ const { read, utils } = XLSX;
     Header,
     MatButtonModule,
     MatProgressSpinnerModule,
-    RouterLink
+    RouterLink,
+    VerificacionPipe,
+    Verificar,
+    RemarcarRol,
   ]
 })
 export class UsersComponent implements AfterViewInit, OnInit {
@@ -32,10 +40,12 @@ export class UsersComponent implements AfterViewInit, OnInit {
   @ViewChild(MatTable) table!: MatTable<Usuario>;
   private supabaseService = inject(SupaService);
   protected showSpinner: boolean = false;
+  private logs?: any[];
   dataSource = new UsersDataSource([]);
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = [
+                      'role',
                       'firstname',
                       'surname',
                       'dni',
@@ -69,6 +79,29 @@ export class UsersComponent implements AfterViewInit, OnInit {
       }
     )
   }
+
+  async getLogs()
+  {
+    return this.supabaseService.supabase
+    .from('ingresos')
+    .select(
+      `
+        created_at,
+        usuario
+      `
+    ).then(
+      ({data, error}) =>
+      {
+        if (error)
+        {
+          console.log(error.message);
+        } else {          
+          this.logs = data;
+          console.log(this.logs);
+        }
+      }
+    )
+  }
   
   onActionButtonClick(event: Event, eventData: Usuario, rowIndex: number)
   {
@@ -76,7 +109,9 @@ export class UsersComponent implements AfterViewInit, OnInit {
     let a = this.dataSource.data.find(( usr ) => { return usr.email == eventData.email} );
     a!.verification = !a?.verification;
     this.changeVerification(a!.email, a!.verification)
+    this.refresh();
     this.table.renderRows();
+
     
   }
 
@@ -130,6 +165,28 @@ export class UsersComponent implements AfterViewInit, OnInit {
     var workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Usr");
     XLSX.writeFile(workbook, "Usuarios.xlsx", { compression: true });
+  }
+
+  protected descargarLogs()
+  {
+    this.getLogs().then(
+      () =>
+      {
+        var worksheet = XLSX.utils.json_to_sheet(this.logs!);
+        XLSX.utils.sheet_add_aoa(worksheet, [["Fecha_Ingreso", "Usuario"]], { origin: "A1" })
+
+        if(!worksheet["!cols"]) worksheet["!cols"] = [];
+        if(!worksheet["!cols"][0]) worksheet["!cols"][0] = {wch: 8};
+        if(!worksheet["!cols"][1]) worksheet["!cols"][1] = {wch: 8};
+        worksheet["!cols"][0].wpx = 200;
+        worksheet["!cols"][1].wpx = 227;
+
+        var workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "log");
+        XLSX.writeFile(workbook, "Registro.xlsx", { compression: true });
+
+      }
+    )
   }
   
 }

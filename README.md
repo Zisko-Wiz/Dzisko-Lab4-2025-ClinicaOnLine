@@ -2,58 +2,87 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.2.
 
-## Development server
+## Página de inicio
+Accede con tu cuenta o crea una nueva para poder utilizar las funciones de la Clínica Online
+![home](screenshots/0.png)
 
-To start a local development server, run:
+### 1 Registrarse: Si no tenés una cuenta registrada podés crear haciendo click en esta opción, 
+### 2 Ingresar: Si ya posees una cuenta haz click en esta opción para acceder.
 
-```bash
-ng serve
-```
+## Menú principal
+Una vez que entres con tu cuenta podrás ver las distintas opciones disponibles
+![main](screenshots/1.png)
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+### 1 Turnos: click acá p.ara acceder al menú de turnos, donde podés ver tus turnos o solicitar uno nuevo
 
-## Code scaffolding
+### 2 Mi Perfil: click acá para acceder a los detalles de tu cuenta.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+### 3 Salir: Cierra tu sesión haciendo click acá.
 
-```bash
-ng generate component component-name
-```
+# Mi perfil
+Muestra todos los datos de tu perfil
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+![perfil](screenshots/3.png)
 
-```bash
-ng generate --help
-```
+# Turnos
+![menuTurnos](screenshots/4.png)
 
-## Building
+### 1 Solicitar turno: click en este botón para poder pedir un nuevo turno
+### 2 Mis turnos: click en este botón para revisar todos sus turnos pendientes y finalizados
 
-To build the project run:
+## Solicitar turno
+En este menú podrá preparar su turno paso a paso
+## Especialidad
+![solicitar1](screenshots/5.png)
 
-```bash
-ng build
-```
+### 1 Click en uno de los botones para seleccionar la especialidad 
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## Especialista
+![solicitar2](screenshots/6.png)
 
-## Running unit tests
+### 1 Click en uno de los botones para seleccionar al especialista disponible
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+## Fecha y hora
+![solicitar3](screenshots/10.png)
 
-```bash
-ng test
-```
+### 1 Click en la hora para desplegar las horas disponibles
+### 2 Click en la hora deseada para seleccionarla
+### 3 Click en el botón para terminar el proceso y pedir el turno
 
-## Running end-to-end tests
+## Mis turnos
+En este menú podrá ver los detalles de sus turnos finalizados y pendiente, ademas de contar con la posibilidad de cancelar los turnos pendientes
+![misTurnos](screenshots/11.png)
 
-For end-to-end (e2e) testing, run:
+### 1 Puede filtrar los turnos mostrados escribiendo en este espacio. Se le mostrará los turnos que posean la palabra escrita.
+### 2 Para cancelar su turno escriba el motivo en la caja de texto de la izquierda y luego clique en 'Cancelar'
 
-```bash
-ng e2e
-```
+# Para los especialistas
+## Turnos
+El botón de turnos de la página principal le llevará a la sección de 'Mis turnos' donde podrá visualizar todos los turnos realizados, cancelados y pendientes
+![misTurnos](screenshots/9.png)
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+### 1 Puede filtrar los turnos mostrados escribiendo en este espacio. Se le mostrará los turnos que posean la palabra escrita.
+### 2 Clique en uno de estos botones para aceptar, rechazar o finalizar el turno (Debe completar la reseña o comentario antes de poder seleccionar 'Rechazar' o 'Finalizar').
+### 3 Escriba en la caja de texto correspondiente el motivo de rechazo o la reseña de la consulta
 
-## Additional Resources
+# Para los administradores
+Como administrador contará con el menú adicional 'Usuarios' donde podrá visualizar y descargar datos de los usuarios de la Clínica Online, ademñas de poder dar de alta a un nuevo usuario.
+![AdminHome](screenshots/7.png)
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+### 1 Clique aquí para acceder al menú adicional.
+
+## Usuarios
+![users](screenshots/8.png)
+### 1 Crear nuevo usuario: clique aquí para dar de alta a un nuevo usuario, como administrador está habilitado para dar de alta a un nuevo administrador.
+### 2 Descargar hoja de cálculo: clique aquí para descargar una hoja de cálculo con todos los datos de los usuarios.
+### 3 Descargar registro de ingresos: clique aquí para descargar una hoja de cálculo con el registro de todos los ingresos de los usuarios.
+### 4 Clique en el botón 'Cambiar' para verificar o bloquear la cuenta del usuario en la fila correspondiente.
+
+
+
+
+
+
+
+
+
