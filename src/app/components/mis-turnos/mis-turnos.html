@@ -8,6 +8,186 @@
       <mat-spinner mode="indeterminate"></mat-spinner>
     </div>
   }
+
+  @if (!this.showFormHistoria)
+  {    
+    <div class="form-container">
+
+      <form [formGroup]="formHistoria" (ngSubmit)="subirHistoriClinica()">
+      <mat-card class="form-card">
+        <mat-card-header>
+          <mat-card-title>Crear historia clínica</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Altura" formControlName="altura">
+                @if (formHistoria.controls['altura'].hasError('required'))
+                {
+                  <mat-error>Altura es <strong>obligatoria</strong></mat-error>
+                }
+              </mat-form-field>
+            </div>  
+          </div>
+  
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Peso" formControlName="peso">
+                @if (formHistoria.controls['peso'].hasError('required'))
+                {
+                  <mat-error>Peso es <strong>obligatorio</strong></mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Temperatura" formControlName="temperatura">
+                @if (formHistoria.controls['temperatura'].hasError('required'))
+                {
+                  <mat-error>Temperatura es <strong>obligatoria</strong></mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </div>
+  
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Presión" formControlName="presion">
+                @if (formHistoria.controls['presion'].hasError('required'))
+                {
+                  <mat-error>Presión es <strong>obligatoria</strong></mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </div>
+  
+          <div class="row">
+
+            <div class="col">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Clave" formControlName="clave1">
+              </mat-form-field>
+            </div>
+
+            <div class="col">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Valor" formControlName="valor1">
+              </mat-form-field>
+            </div>
+
+          </div>
+
+          <div class="row">
+
+            <div class="col">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Clave" formControlName="clave2">
+              </mat-form-field>
+            </div>
+
+            <div class="col">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Valor" formControlName="valor2">
+              </mat-form-field>
+            </div>
+
+          </div>
+
+          <div class="row">
+
+            <div class="col">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Clave" formControlName="clave3">
+              </mat-form-field>
+            </div>
+
+            <div class="col">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Valor" formControlName="valor3">
+              </mat-form-field>
+            </div>
+
+          </div>
+
+          <div class="row">
+
+            <div class="col">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Clave" formControlName="clave4">
+              </mat-form-field>
+            </div>
+
+            <div class="col" id="slider">
+                <mat-slider min="0" max="100 " discrete [displayWith]="formatLabel">
+                  <input matSliderStartThumb formControlName="valor4a">
+                  <input matSliderEndThumb formControlName="valor4b">
+                </mat-slider>
+            </div>
+
+          </div>
+
+          <div class="row">
+
+            <div class="col">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Clave" formControlName="clave5">
+              </mat-form-field>
+            </div>
+
+            <div class="col">
+                <textarea placeholder="Valor" formControlName="valor5" id="textarea"></textarea>
+                @if (formHistoria.controls['valor5'].hasError('pattern'))
+                {
+                  <mat-error>Solo están permitido los valores numéricos</mat-error>
+                }
+            </div>
+
+          </div>
+
+          <div class="row" id="clave6-row">
+
+            <div class="col">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Clave" formControlName="clave6">
+              </mat-form-field>
+            </div>
+
+            <div class="col">
+              <mat-slide-toggle formControlName="valor6">{{this.formHistoria.get('valor6')!.value}}</mat-slide-toggle>
+            </div>
+
+        </div>
+
+          
+  
+          <!-- <div class="row2">
+            <re-captcha formControlName="recaptchaReactive" siteKey="6LdizHArAAAAANl9fAZI9gxk6nMiucTZHRk7XT-P"></re-captcha>
+          </div> -->
+  
+        </mat-card-content>
+        
+        <div class="row2">
+          <button type="button" id="cancel-btn" matButton="elevated">Cancelar</button>
+  
+          <mat-card-actions class="submit-div">
+            <button matButton="elevated" color="primary" type="submit" [disabled]="!this.formHistoria.valid">Enviar</button>
+          </mat-card-actions>
+        </div>
+  
+      </mat-card>
+    </form>
+
+    </div>
+  }
+
+
   <div class="options">
     <mat-form-field class="example-full-width">
     <input class="cutom-input" matInput (keyup)="applyFilter($event)" placeholder="Buscar" #input>
@@ -91,6 +271,27 @@
             {
               {{row.comentario}}
             }
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="crearHistoria">
+          <th mat-header-cell *matHeaderCellDef>Crear historia</th>
+          <td mat-cell *matCellDef="let row; let i = index">
+            @if (row.estado == 'finalizado')
+            {
+              <button mat-raised-button
+              (click)="crearHistoriaClinica()"
+              (focusout)="this.refresh()"
+              [style.pointer-events]=" ( (row.comentario == null || row.comentario == '') ) ? 'none' : 'auto' "
+              >Crear historia</button>
+            }
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="verHistoria">
+          <th mat-header-cell *matHeaderCellDef>Historia clínica</th>
+          <td mat-cell *matCellDef="let row; let i = index">
+              {{row.comentario}}
           </td>
         </ng-container>
 
