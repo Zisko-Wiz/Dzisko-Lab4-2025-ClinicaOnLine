@@ -13,6 +13,9 @@
             @if (this.signInService.userRole == "administrador")
             {
                 <li style="float: right;"><button routerLink="/usuarios">Usuarios</button></li>
+            } @else if (this.signInService.userRole == 'especialista')
+            {
+                <li style="float: right;"><button routerLink="/pacientes">Pacientes</button></li>
             }
         } @else
         {

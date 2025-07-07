@@ -9,7 +9,7 @@
     </div>
   }
 
-  @if (!this.showFormHistoria)
+  @if (this.showFormHistoria)
   {    
     <div class="form-container">
 
@@ -160,7 +160,7 @@
             </div>
 
             <div class="col">
-              <mat-slide-toggle formControlName="valor6">{{this.formHistoria.get('valor6')!.value}}</mat-slide-toggle>
+              <mat-slide-toggle formControlName="valor6">{{this.formHistoria.get('valor6')!.value | siNo }}</mat-slide-toggle>
             </div>
 
         </div>
@@ -174,7 +174,7 @@
         </mat-card-content>
         
         <div class="row2">
-          <button type="button" id="cancel-btn" matButton="elevated">Cancelar</button>
+          <button type="button" id="cancel-btn" matButton="elevated" (click)="this.changeFormVisibility()" >Cancelar</button>
   
           <mat-card-actions class="submit-div">
             <button matButton="elevated" color="primary" type="submit" [disabled]="!this.formHistoria.valid">Enviar</button>
@@ -277,12 +277,12 @@
         <ng-container matColumnDef="crearHistoria">
           <th mat-header-cell *matHeaderCellDef>Crear historia</th>
           <td mat-cell *matCellDef="let row; let i = index">
-            @if (row.estado == 'finalizado')
+            @if (row.estado == 'finalizado' && row.historia == null)
             {
               <button mat-raised-button
-              (click)="crearHistoriaClinica()"
+              (click)="crearHistoriaClinica(row.email_paciente, row.fecha)"
               (focusout)="this.refresh()"
-              [style.pointer-events]=" ( (row.comentario == null || row.comentario == '') ) ? 'none' : 'auto' "
+              [style.pointer-events]=" ( (row.comentario == null || row.comentario == '' ) ) ? 'none' : 'auto' "
               >Crear historia</button>
             }
           </td>
@@ -291,21 +291,28 @@
         <ng-container matColumnDef="verHistoria">
           <th mat-header-cell *matHeaderCellDef>Historia clínica</th>
           <td mat-cell *matCellDef="let row; let i = index">
-              {{row.comentario}}
+            
+            <div class="historia" appMostrarHistorial >
+              {{row.historia}}
+            </div>
+              
           </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+        [class.example-expanded-row]="expandedRow === row"
+        (click)="expandedRow = expandedRow === row ? null : row"></tr>
 
       </table>
     
-      <mat-paginator #paginator
-          [length]="dataSource.data.length"
-          [pageIndex]="0"
-          [pageSize]="10"
-          aria-label="Select page">
-      </mat-paginator>
+
+        <mat-paginator #paginator
+            [length]="dataSource?.data.length"
+            [pageIndex]="0"
+            [pageSize]="5"
+            aria-label="Select page">
+        </mat-paginator>
     </div>
   </div>
 

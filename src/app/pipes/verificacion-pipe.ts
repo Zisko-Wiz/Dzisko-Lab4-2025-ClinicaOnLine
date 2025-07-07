@@ -7,13 +7,13 @@ export class VerificacionPipe implements PipeTransform {
 
 
   
-  transform(valor: boolean): unknown
+  transform(valor: boolean): string | null
   {
     
-    switch (valor) {
+    switch (valor)
+    {
       case true:
         return 'VERIFICADO'
-        break;
     
       case false:
         return 'NO VERIFICADO'

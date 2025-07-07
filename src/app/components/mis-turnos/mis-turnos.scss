@@ -25,17 +25,6 @@
   margin-left: 20vw;
 }
 
-.spinner
-{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  left: 0;
-  background-color: rgb(255, 255, 255, 0.7);
-}
 .cutom-input
 {
   width: 10vw;
@@ -133,4 +122,16 @@ mat-slider
 {
   display: flex;
   align-items: baseline;
+}
+
+td
+{ 
+  white-space:pre
+}
+
+.historia
+{
+  width: 20rem;
+  height: 3rem;
+  cursor: pointer;
 }

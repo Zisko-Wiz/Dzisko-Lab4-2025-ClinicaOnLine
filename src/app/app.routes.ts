@@ -60,13 +60,17 @@ export const routes: Routes = [
     {
         path: 'mis-turnos/especialista',
         loadComponent: () => import('./components/mis-turnos/mis-turnos').then(c => c.MisTurnos),
-        //canMatch: [canMatchPerfilGuard],
+        canMatch: [canMatchPerfilGuard],
         data: {animation: 'slideUpAnimation'}
     },
     {
         path: 'mis-turnos/paciente',
         loadComponent: () => import('./components/turnos-paciente/turnos-paciente').then(c => c.TurnosPaciente),
         data: {animation: 'slideUpAnimation'}
+    },
+    {
+        path: 'pacientes',
+        loadComponent: () => import('./components/pacientes/pacientes').then(c => c.Pacientes)
     },
     {
         path: 'test',

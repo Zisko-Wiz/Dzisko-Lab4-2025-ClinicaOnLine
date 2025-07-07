@@ -22,8 +22,9 @@ export class Turno
     firstname:string;
     surname:string;
     calificacion:string;
+    historia:string|null;
 
-    constructor(fecha:string, emailEsp:string, emailPaciente:string, especialidad:string, estado:string, comentario:string, firstname:string, surname:string, calificaion:string)
+    constructor(fecha:string, emailEsp:string, emailPaciente:string, especialidad:string, estado:string, comentario:string, firstname:string, surname:string, calificaion:string, historia:string|null = null)
     {
         this.fecha = fecha;
         this.email_esp = emailEsp;
@@ -34,6 +35,7 @@ export class Turno
         this.firstname = firstname;
         this.surname = surname;
         this.calificacion = calificaion;
+        this.historia = historia;
     }
 
 }
