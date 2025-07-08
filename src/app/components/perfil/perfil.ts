@@ -9,6 +9,8 @@ import { SupaService } from '../../services/supa.service';
 import { Horario } from '../../models/horario';
 import { Subscription } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { HistoriaComponent } from '../historia/historia';
+import { Historia } from '../../models/historia.models';
 
 @Component({
   selector: 'app-perfil',
@@ -18,13 +20,17 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     ReactiveFormsModule,
     FormsModule,
     MatProgressSpinnerModule,
-    MatSelectModule
+    MatSelectModule,
+    HistoriaComponent
   ],
   templateUrl: './perfil.html',
   styleUrl: './perfil.scss'
 })
 export class Perfil implements OnInit, OnDestroy
 {
+  protected loading: boolean = false;
+  protected historiaCLinica: Historia[] = [];
+  protected showHistorias: boolean = false;
   private snackBar = inject(MatSnackBar);
   private horariosSubscription?: Subscription;
   protected horariosCargados?: Horario[];
@@ -137,7 +143,85 @@ export class Perfil implements OnInit, OnDestroy
 
   ngOnDestroy(): void
   {
-    this.horariosSubscription?.unsubscribe();  
+    this.horariosSubscription?.unsubscribe();
+  }
+
+  protected mostrarHistoriaClinica()
+  {
+    this.cargarHistoriaCLinica()
+    .then
+    ( () =>
+        {
+          this.agregarDatosDinamicos()
+          .then
+          (
+            () => 
+              {
+                this.showHistorias = true;
+                this.loading = false;
+              }
+          );
+        }
+    )
+  }
+
+  private async cargarHistoriaCLinica()
+  {
+    this.loading = true;
+    return this.supabaseService.supabase
+    .from('historia')
+    .select()
+    .eq('email_paciente', this.signInService.usuario?.email)
+    .then
+    (
+      ( {data, error} ) => 
+      {
+        if (error)
+        {
+          console.error(error.message, error.code);            
+        } else {
+          this.historiaCLinica = data;
+        }
+      }
+    )
+  }
+
+  private async agregarDatosDinamicos()
+  {
+    if (this.historiaCLinica.length > 0)
+    {
+      return this.supabaseService.supabase
+      .from('datos_dinamicos')
+      .select()
+      .eq('email_paciente', this.signInService.usuario?.email)
+      .then
+      (
+        ( {data, error} ) => 
+        {
+          if (error)
+          {
+            console.error(error.message, error.code);            
+          } else {
+            for (let index = 0; index < data.length; index++)
+            {
+              let indexHistoria = this.historiaCLinica.findIndex( (x) => { return x.fecha == data[index].fecha} );
+              
+              if( indexHistoria >= 0)
+              {
+                if (this.historiaCLinica[indexHistoria].datosDinamicos == undefined)
+                {
+                  this.historiaCLinica[indexHistoria].datosDinamicos = [];  
+                }
+
+                this.historiaCLinica[indexHistoria].datosDinamicos.push(data[index])
+              }
+            
+            }
+            console.log(this.historiaCLinica);
+          }
+        }
+      )
+    }
   }
 
   protected cargarNuevosHorarios()

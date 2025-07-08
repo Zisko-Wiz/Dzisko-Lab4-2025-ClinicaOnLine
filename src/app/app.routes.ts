@@ -73,6 +73,10 @@ export const routes: Routes = [
         loadComponent: () => import('./components/pacientes/pacientes').then(c => c.Pacientes)
     },
     {
+        path: 'historial-clinico',
+        loadComponent: () => import('./components/historia/historia').then( c => c.HistoriaComponent)
+    },
+    {
         path: 'test',
         loadComponent: () => import('./components/test/test').then(c => c.BarChartComponent)
     },

@@ -60,6 +60,7 @@ export class MisTurnos implements AfterViewInit, OnInit
   protected todosUsuarios : Usuario[] = [];
   dataSource? :any;
   protected emailPacienteSeleccionado: string = "";
+  protected especialidadSeleccionada: string= "";
   protected fechaTurnoSeleccionado: string = "";
   protected historiasClinicas: any[] = [];
   protected datosDinamicos: any[] = [];
@@ -222,7 +223,9 @@ export class MisTurnos implements AfterViewInit, OnInit
   async getHistoriasClinicas()
   {
     return this.supabaseService.supabase.from('historia')
-    .select().then(
+    .select()
+    .eq('email_especialista', this.signInService.usuario?.email)
+    .then(
       ( {data, error} ) => 
         {
           if (error)
@@ -302,10 +305,11 @@ export class MisTurnos implements AfterViewInit, OnInit
     return `${value}`;
   }
 
-  crearHistoriaClinica(emailPaciente: string, fecha: string)
+  crearHistoriaClinica(especialidad:string, emailPaciente: string, fecha: string)
   {
     this.emailPacienteSeleccionado = emailPaciente;
     this.fechaTurnoSeleccionado = fecha;
+    this.especialidadSeleccionada = especialidad;
     this.changeFormVisibility();
     this.scrollToTop();
   }

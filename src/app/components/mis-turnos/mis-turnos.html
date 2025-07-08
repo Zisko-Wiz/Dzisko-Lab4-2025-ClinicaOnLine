@@ -280,7 +280,7 @@
             @if (row.estado == 'finalizado' && row.historia == null)
             {
               <button mat-raised-button
-              (click)="crearHistoriaClinica(row.email_paciente, row.fecha)"
+              (click)="crearHistoriaClinica(row.especialidad, row.email_paciente, row.fecha)"
               (focusout)="this.refresh()"
               [style.pointer-events]=" ( (row.comentario == null || row.comentario == '' ) ) ? 'none' : 'auto' "
               >Crear historia</button>

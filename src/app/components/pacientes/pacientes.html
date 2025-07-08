@@ -9,26 +9,28 @@
     <div class="pacientes" >
         @for (paciente of this.listaFinal; track $index)
         {
-            <mat-card class="card" >
-                <mat-card-header>
-                    <div mat-card-avatar class="avatar" [appAvatarURL]="this.getAvatarURL(paciente[0].email_paciente)" ></div>
-                    <mat-card-title>{{paciente[0].email_paciente | nombre: this.todosUsuarios}}</mat-card-title>
-                </mat-card-header>
-                <mat-card-content>
-                    <h2>Turnos</h2>
-                    @for (item of paciente; track $index)
-                    {
-                        <div class="detalles" appMostrarHistorial>
-                            <h3>{{item.fecha | date: 'dd/MM/yyyy HH:mm'}}</h3>
-                            <h4>Reseña</h4>
-                            <p>{{item.comentario}}</p>
-                            <h4>Historia</h4>
-                            <p>{{item.historia}}</p>
-                            <mat-divider></mat-divider>
-                        </div>
-                    }
-                </mat-card-content>
-            </mat-card>
+            <div>
+                <mat-card class="card" >
+                    <mat-card-header>
+                        <div mat-card-avatar class="avatar" [appAvatarURL]="this.getAvatarURL(paciente[0].email_paciente)" ></div>
+                        <mat-card-title>{{paciente[0].email_paciente | nombre: this.todosUsuarios}}</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <h2>Turnos</h2>
+                        @for (item of paciente; track $index)
+                        {
+                                <div class="detalles" appMostrarHistorial>
+                                    <h3>{{item.fecha | date: 'dd/MM/yyyy HH:mm'}}</h3>
+                                    <h4>Reseña</h4>
+                                    <p>{{item.comentario}}</p>
+                                    <h4>Historia</h4>
+                                    <p>{{item.historia}}</p>
+                                    <mat-divider></mat-divider>
+                                </div>
+                        }
+                    </mat-card-content>
+                </mat-card>
+            </div>
         }
     </div>
 </div>

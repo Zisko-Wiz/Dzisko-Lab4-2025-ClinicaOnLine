@@ -1,0 +1,17 @@
+<div class="container">
+    <div class="display-historias">
+        @for (item of this.historias(); track $index)
+        {<div>
+            <div class="historia" appMostrarHistorial>
+                <h3>{{item.fecha | date: 'dd/MM/yyyy HH:mm'}}</h3>
+                <h2>{{item.especialidad}}</h2>
+                <h4>Historia clínica:</h4>
+                @for (dato of item.datosDinamicos; track $index)
+                {
+                    <p>{{dato.clave}}: {{dato.valor}}</p>
+                }
+            </div>
+        </div>
+        }
+    </div>
+</div>

@@ -2,7 +2,19 @@
 
 <div class="container">
 
+    @if (this.showHistorias)
+    {
+        <button id="volver" mat-flat-button (click)="this.showHistorias = false">Volver</button>
+        <app-historia id="historias" [historias]="this.historiaCLinica"></app-historia>
+    }
+
     <div class="info">
+
+        @if (this.signInService.userRole == "paciente")
+        {
+            <button class="historial-btn"  mat-flat-button (click)="this.mostrarHistoriaClinica()">Ver Historia Clínica</button>
+            <button class="historial-btn" mat-flat-button>Descargar Historia Clínica</button>
+        }
 
         <div id="avatar-section">
             <img class="avatar" src="{{this.signInService.avatarURL1}}">
@@ -158,6 +170,5 @@
                 
         </form>
     }
-
 
 </div>
