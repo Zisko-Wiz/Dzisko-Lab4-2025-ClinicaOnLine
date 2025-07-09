@@ -165,11 +165,9 @@
 
         </div>
 
-          
-  
-          <!-- <div class="row2">
-            <re-captcha formControlName="recaptchaReactive" siteKey="6LdizHArAAAAANl9fAZI9gxk6nMiucTZHRk7XT-P"></re-captcha>
-          </div> -->
+          <div class="row2">
+            <app-mi-captcha (respuestaCaptcha)="recibirRespuestaCaptcha($event)"></app-mi-captcha>
+          </div>
   
         </mat-card-content>
         
@@ -177,7 +175,7 @@
           <button type="button" id="cancel-btn" matButton="elevated" (click)="this.changeFormVisibility()" >Cancelar</button>
   
           <mat-card-actions class="submit-div">
-            <button matButton="elevated" color="primary" type="submit" [disabled]="!this.formHistoria.valid">Enviar</button>
+            <button matButton="elevated" color="primary" type="submit" [disabled]="(!this.formHistoria.valid) || (this.captchaValido == false)">Enviar</button>
           </mat-card-actions>
         </div>
   

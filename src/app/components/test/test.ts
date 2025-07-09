@@ -3,13 +3,14 @@ import { ChartConfiguration, ChartData, ChartEvent } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 import { MatButton } from '@angular/material/button';
 import { SupaService } from '../../services/supa.service';
+import { MiCaptcha } from '../mi-captcha/mi-captcha';
 
 @Component({
   selector: 'app-bar-chart',
   templateUrl: './test.html',
   styleUrl: './test.scss',
   standalone: true,
-  imports: [MatButton, BaseChartDirective],
+  imports: [MatButton, BaseChartDirective, MiCaptcha],
 })
 export class BarChartComponent implements OnInit
 {

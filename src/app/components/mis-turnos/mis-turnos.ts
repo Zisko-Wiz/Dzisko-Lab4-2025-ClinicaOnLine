@@ -19,6 +19,7 @@ import {MatSliderModule} from '@angular/material/slider';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { SiNoPipe } from '../../pipes/si-no-pipe';
 import { MostrarHistorial } from '../../directives/mostrar-historial';
+import { MiCaptcha } from '../mi-captcha/mi-captcha';
 
 @Component({
   selector: 'app-mis-turnos',
@@ -40,7 +41,8 @@ import { MostrarHistorial } from '../../directives/mostrar-historial';
     MatSliderModule,
     MatSlideToggleModule,
     SiNoPipe,
-    MostrarHistorial
+    MostrarHistorial,
+    MiCaptcha
   ],
   templateUrl: './mis-turnos.html',
   styleUrl: './mis-turnos.scss'
@@ -53,6 +55,7 @@ export class MisTurnos implements AfterViewInit, OnInit
 
   expandedRow: any | null;
 
+  protected captchaValido: boolean = false;
   private supabaseService = inject(SupaService);
   private signInService = inject(SigninService);
   protected showSpinner: boolean = false;
@@ -512,6 +515,12 @@ export class MisTurnos implements AfterViewInit, OnInit
 
           }
       )
+  }
+
+  recibirRespuestaCaptcha(respuesta: boolean)
+  {
+    this.captchaValido = respuesta;
+    console.log(this.captchaValido);
   }
 
 

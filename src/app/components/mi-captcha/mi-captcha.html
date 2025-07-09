@@ -1,0 +1,22 @@
+<mat-card class="card">
+    <mat-card-header>
+        <h1>CAPTCHA</h1>
+    </mat-card-header>
+    <img class="captcha-img" [src]="captchaImageUrl" alt="CAPTCHA">
+    <mat-card-content>
+        <mat-form-field class="example-full-width">
+            <input matInput [(ngModel)]="this.userCaptcha">
+            
+        </mat-form-field>
+        @if (this.captchaInvalido == true)
+        {
+            <p class="error" >CAPTCHA inválido, vuelva a intentarlo</p>
+        } @else if (this.captchaInvalido == false){
+            <p class="success" >CAPTCHA verificado</p>
+        }
+        <div>
+            <button type="button" mat-flat-button (click)="this.onSubmit()">Aceptar</button>
+            <button type="button" mat-flat-button type="button" class="btn btn-link" (click)="refreshCaptcha()">Refrescar</button>
+        </div>
+    </mat-card-content>
+</mat-card>

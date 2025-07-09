@@ -1,0 +1,24 @@
+.card
+{
+    display: grid;
+    grid-template-rows: repeat(4, 10vh);
+    width: 20vw;
+    justify-content: center;
+    text-align: center;
+}
+
+.captcha-img
+{
+    height: 10vh;
+    border: 1px solid #ddd
+}
+
+.error
+{
+    color: red;
+}
+
+.success
+{
+    color: green;
+}
