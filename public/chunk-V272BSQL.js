@@ -1,0 +1,1 @@
+import{Qa as r,X as t,sa as i}from"./chunk-RZXA2LSZ.js";var l=class e{el=t(i);constructor(){this.el.nativeElement.style.backgroundColor="blue",this.el.nativeElement.style.color="white",this.el.nativeElement.style.textAlign="center"}static \u0275fac=function(n){return new(n||e)};static \u0275dir=r({type:e,selectors:[["","appRemarcar",""]]})};export{l as a};

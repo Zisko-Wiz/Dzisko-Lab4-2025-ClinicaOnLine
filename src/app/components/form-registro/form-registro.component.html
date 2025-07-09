@@ -7,7 +7,7 @@
 
 @if (this.showForm && !this.showSpinner)
 {
-    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()"  class="animate__animated animate__jello">
       <mat-card class="form-card">
         <mat-card-header>
           <mat-card-title>Crear cuenta</mat-card-title>

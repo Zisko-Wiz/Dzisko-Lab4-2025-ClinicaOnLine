@@ -1,0 +1,1 @@
+var i=class{fecha;email_esp;especialidad;email_paciente;estado;comentario;firstname;surname;calificacion;historia;constructor(s,t,n,r,e,a,g,c,l,o=null){this.fecha=s,this.email_esp=t,this.especialidad=r,this.email_paciente=n,this.estado=e,this.comentario=a,this.firstname=g,this.surname=c,this.calificacion=l,this.historia=o}};export{i as a};

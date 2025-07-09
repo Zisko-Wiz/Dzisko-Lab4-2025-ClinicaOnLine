@@ -132,16 +132,22 @@ export class TodosTurnos implements AfterViewInit, OnInit{
   }
 
   ngAfterViewInit(): void {
-    this.dataSource!.sort = this.sort;
-    this.dataSource!.paginator = this.paginator;
-    this.table.dataSource = this.dataSource;
+    if (this.dataSource != undefined)
+    {
+      this.dataSource!.sort = this.sort;
+      this.dataSource!.paginator = this.paginator;
+      this.table.dataSource = this.dataSource;
+    }
   }
 
   refresh()
   {
-    this.dataSource!.sort = this.sort;
-    this.dataSource!.paginator = this.paginator;
-    this.table.dataSource = this.dataSource;
+    if (this.dataSource != undefined)
+    {
+      this.dataSource!.sort = this.sort;
+      this.dataSource!.paginator = this.paginator;
+      this.table.dataSource = this.dataSource;  
+    }
   }
 
   applyFilter(event: Event)
