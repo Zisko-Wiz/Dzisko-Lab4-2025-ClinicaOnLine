@@ -15,6 +15,11 @@ import { Remarcar } from '../../directives/remarcar';
 import { Verificar } from '../../directives/verificar';
 import { RemarcarRol } from '../../directives/remarcar-rol';
 import { BaseChartDirective } from 'ng2-charts';
+import { HistoriaComponent } from '../historia/historia';
+import { Historia } from '../../models/historia.models';
+import {MatIconModule} from '@angular/material/icon';
+import { AvatarURL } from '../../directives/avatar-url';
+import { NombrePipe } from '../../pipes/nombre-pipe';
 const { read, utils } = XLSX;
 
 @Component({
@@ -32,19 +37,27 @@ const { read, utils } = XLSX;
     VerificacionPipe,
     Verificar,
     RemarcarRol,
-  ]
+    HistoriaComponent,
+    MatIconModule,
+    AvatarURL,
+    NombrePipe
+]
 })
 export class UsersComponent implements AfterViewInit, OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatTable) table!: MatTable<Usuario>;
   private supabaseService = inject(SupaService);
+  protected showHistorias: boolean = false;
   protected showSpinner: boolean = false;
+  protected historiaCLinica: Historia[] = [];
   private logs?: any[];
   dataSource = new UsersDataSource([]);
+  users : Usuario[] = [];
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = [
+                      'historial',
                       'role',
                       'firstname',
                       'surname',
@@ -74,6 +87,7 @@ export class UsersComponent implements AfterViewInit, OnInit {
         } else
         {
           this.dataSource = new UsersDataSource(data);
+          this.users = data;
           this.refresh();
         }
       }
@@ -111,8 +125,20 @@ export class UsersComponent implements AfterViewInit, OnInit {
     this.changeVerification(a!.email, a!.verification)
     this.refresh();
     this.table.renderRows();
+  }
 
-    
+  protected mostrarHistorial(emailPaciente: string)
+  {
+    this.showSpinner = true;
+    this.getHistoriaClinica(emailPaciente)
+    .then
+    (
+      () =>
+      {
+        this.showHistorias = true;
+        this.showSpinner = false;
+      }  
+    );
   }
 
   ngAfterViewInit(): void {
@@ -169,7 +195,8 @@ export class UsersComponent implements AfterViewInit, OnInit {
 
   protected descargarLogs()
   {
-    this.getLogs().then(
+    this.getLogs().then
+    (
       () =>
       {
         var worksheet = XLSX.utils.json_to_sheet(this.logs!);
@@ -189,4 +216,86 @@ export class UsersComponent implements AfterViewInit, OnInit {
     )
   }
   
+  protected async getHistoriaClinica(emailPaciente: string)
+  {
+    return this.cargarHistoriaCLinica(emailPaciente)
+    .then
+    ( () =>
+        {
+          this.agregarDatosDinamicos(emailPaciente)
+          .then
+          (
+            () => 
+            {
+              this.showSpinner = false;
+            }
+          );
+        }
+    )
+  }
+
+  private async cargarHistoriaCLinica(emailPaciente: string)
+  {
+    this.showSpinner = true;
+    return this.supabaseService.supabase
+    .from('historia')
+    .select()
+    .eq('email_paciente', emailPaciente)
+    .then
+    (
+      ( {data, error} ) => 
+      {
+        if (error)
+        {
+          console.error(error.message, error.code);            
+        } else {
+          this.historiaCLinica = data;
+        }
+      }
+    )
+  }
+
+  private async agregarDatosDinamicos(emailPaciente: string)
+  {
+    if (this.historiaCLinica.length > 0)
+    {
+      return this.supabaseService.supabase
+      .from('datos_dinamicos')
+      .select()
+      .eq('email_paciente', emailPaciente)
+      .then
+      (
+        ( {data, error} ) => 
+        {
+          if (error)
+          {
+            console.error(error.message, error.code);            
+          } else {
+            for (let index = 0; index < data.length; index++)
+            {
+              let indexHistoria = this.historiaCLinica.findIndex( (x) => { return x.fecha == data[index].fecha} );
+              
+              if( indexHistoria >= 0)
+              {
+                if (this.historiaCLinica[indexHistoria].datosDinamicos == undefined)
+                {
+                  this.historiaCLinica[indexHistoria].datosDinamicos = [];  
+                }
+
+                this.historiaCLinica[indexHistoria].datosDinamicos.push(data[index])
+              }
+            
+            }
+          }
+        }
+      )
+    }
+  }
+
+  getAvatarURL(emailPaciente: string)
+  {
+    let email = emailPaciente.split('@')
+    return `${email[0]}-1`
+  }
+
 }

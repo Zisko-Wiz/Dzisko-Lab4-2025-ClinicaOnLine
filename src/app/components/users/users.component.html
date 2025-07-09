@@ -8,6 +8,12 @@
       <mat-spinner mode="indeterminate"></mat-spinner>
     </div>
   }
+
+  @if (this.showHistorias)
+  {
+    <button id="volver" mat-flat-button (click)="this.showHistorias = false">Volver</button>
+    <app-historia class="historias" [historias]="this.historiaCLinica"></app-historia>
+  }
   
   <div class="options">
     <button mat-flat-button routerLink="/registro" >Crear nuevo usuario</button>
@@ -63,6 +69,20 @@
           <th mat-header-cell *matHeaderCellDef>Acción</th>
           <td mat-cell *matCellDef="let row; let i = index">
             <button mat-raised-button (click)="onActionButtonClick($event, row, i)">Cambiar</button> </td>
+        </ng-container>
+
+        <ng-container matColumnDef="historial">
+          <th mat-header-cell *matHeaderCellDef>Historia Clínica</th>
+          <td mat-cell *matCellDef="let row; let i = index">
+            @if (row.role == 'paciente')
+            {
+              <button md-fab class="image" 
+                [appAvatarURL]="this.getAvatarURL(row.email)"
+                (click)="this.mostrarHistorial(row.email)">
+                {{row.email | nombre: this.users}}
+              </button>
+            } 
+          </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

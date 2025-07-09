@@ -2,10 +2,36 @@
 
 <div class="container">
 
+    @if(this.loading)
+    {
+        <div class="spinner">
+            <mat-spinner mode="indeterminate"></mat-spinner>
+        </div>
+    }
+
     @if (this.showHistorias)
     {
         <button id="volver" mat-flat-button (click)="this.showHistorias = false">Volver</button>
-        <app-historia id="historias" [historias]="this.historiaCLinica"></app-historia>
+        <app-historia class="historias" [historias]="this.historiaCLinica"></app-historia>
+    }
+    
+    @if (this.showDownloadOptions)
+    {
+        <div class="historias">
+            <div class="container-opt">
+                <label>Especialidad:</label>
+                <mat-select class="mat-select-custom" placeholder="Especialidad" [(value)]="this.optionSelected">
+                    <mat-option value='todas'>todas</mat-option>
+                        @for (esp of this.especialidades; track $index)
+                        {
+                            <mat-option [value]="esp">{{ esp }}</mat-option>
+                        }
+                    </mat-select>
+                <button class="historial-btn" mat-flat-button (click)="crearPDF()"
+                [style.pointer-events]=" (this.optionSelected != '') ? 'auto' : 'none' " >Descargar</button>
+                <button class="historial-btn" mat-flat-button (click)="this.showDownloadOptions = false" >Cancelar</button>
+            </div>
+        </div>
     }
 
     <div class="info">
@@ -13,7 +39,7 @@
         @if (this.signInService.userRole == "paciente")
         {
             <button class="historial-btn"  mat-flat-button (click)="this.mostrarHistoriaClinica()">Ver Historia Clínica</button>
-            <button class="historial-btn" mat-flat-button>Descargar Historia Clínica</button>
+            <button class="historial-btn" mat-flat-button (click)="this.mostrarOpcionesDescarga()">Descargar Historia Clínica</button>
         }
 
         <div id="avatar-section">

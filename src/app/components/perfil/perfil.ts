@@ -11,6 +11,8 @@ import { Subscription } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HistoriaComponent } from '../historia/historia';
 import { Historia } from '../../models/historia.models';
+import { jsPDF } from "jspdf";
+import { DateTime, Duration, Interval } from 'luxon'
 
 @Component({
   selector: 'app-perfil',
@@ -21,13 +23,16 @@ import { Historia } from '../../models/historia.models';
     FormsModule,
     MatProgressSpinnerModule,
     MatSelectModule,
-    HistoriaComponent
+    HistoriaComponent,
+    MatSelectModule
   ],
   templateUrl: './perfil.html',
   styleUrl: './perfil.scss'
 })
 export class Perfil implements OnInit, OnDestroy
 {
+  protected optionSelected: string = "";
+  protected showDownloadOptions: boolean = false;
   protected loading: boolean = false;
   protected historiaCLinica: Historia[] = [];
   protected showHistorias: boolean = false;
@@ -36,6 +41,7 @@ export class Perfil implements OnInit, OnDestroy
   protected horariosCargados?: Horario[];
   protected signInService = inject(SigninService);
   protected supabaseService = inject(SupaService);
+  protected especialidades: string[] = [];
   protected horarios = [
     "08:00",
     "08:30",
@@ -148,21 +154,54 @@ export class Perfil implements OnInit, OnDestroy
 
   protected mostrarHistoriaClinica()
   {
-    this.cargarHistoriaCLinica()
-    .then
-    ( () =>
-        {
-          this.agregarDatosDinamicos()
-          .then
-          (
-            () => 
-              {
-                this.showHistorias = true;
-                this.loading = false;
-              }
-          );
-        }
+    this.loading = true;
+    this.getHistoriaClinica()
+    .then(
+      () => 
+      {
+        this.showHistorias = true;
+        this.loading = false;
+      }
     )
+  }
+
+  protected mostrarOpcionesDescarga()
+  {
+    if (this.historiaCLinica.length == 0)
+    {
+      this.getHistoriaClinica()
+      .then
+      (
+        () => 
+        {
+          this.showDownloadOptions = true;
+        }
+      ) 
+    } else {
+      this.showDownloadOptions = true;
+    }
+  }
+
+  protected async getHistoriaClinica()
+  {
+    if (this.historiaCLinica.length == 0)
+    {
+      this.loading = true;
+      return this.cargarHistoriaCLinica()
+      .then
+      ( () =>
+          {
+            this.agregarDatosDinamicos()
+            .then
+            (
+              () => 
+                {
+                  this.loading = false;
+                }
+            );
+          }
+      )
+    }
   }
 
   private async cargarHistoriaCLinica()
@@ -180,10 +219,93 @@ export class Perfil implements OnInit, OnDestroy
         {
           console.error(error.message, error.code);            
         } else {
+
+          for (let index = 0; index < data.length; index++)
+          {
+            if (this.especialidades.find( (x) => { return x == data[index].especialidad} ) == undefined)
+            {
+             this.especialidades.push(data[index].especialidad)
+            }
+          }
+
           this.historiaCLinica = data;
         }
       }
     )
+  }
+
+  protected crearPDF()
+  {
+    if (this.historiaCLinica.length != 0)
+    {
+      this.loading = true;
+      this.getHistoriaClinica()
+      .then
+      (
+        () => 
+        {
+          var doc = new jsPDF();
+          var y = 150;
+          var fechaHoy = DateTime.now().setZone("America/Argentina/Buenos_Aires").toFormat('dd/MM/yyyy HH:mm');
+          var count = 0;
+
+          doc.text('HISTORIA CLÍNICA', 80, 10)
+          doc.text(`Fecha de emisión: ${fechaHoy}`, 17, 15)
+          doc.addImage("hospital.png",'PNG',60, 20, 100, 100)
+
+          for (let index = 0; index < this.historiaCLinica.length; index++)
+          {
+            let fecha = DateTime.fromISO(this.historiaCLinica[index].fecha)
+            .toFormat('dd/MM/yyyy HH:mm');
+            
+            if (this.historiaCLinica[index].especialidad == this.optionSelected || this.optionSelected == "todas")
+            {
+              if (count > 0)
+              {
+                doc.addPage();
+                y = 150;
+                doc.text('HISTORIA CLÍNICA', 80, 10)
+                doc.text(`Fecha de emisión: ${fechaHoy}`, 17, 15)
+                doc.addImage("hospital.png",'PNG',60, 20, 100, 100)
+              }
+
+              doc.text
+              (
+                [
+                  fecha,
+                  `Especialidad: ${this.historiaCLinica[index].especialidad}`,
+                  `Altura: ${this.historiaCLinica[index].altura}`,
+                  `Peso: ${this.historiaCLinica[index].peso}`,
+                  `Temperatura: ${this.historiaCLinica[index].temperatura}`,
+                  `Presión: ${this.historiaCLinica[index].presion}`
+                ],10, (y)
+              )
+
+              if (this.historiaCLinica[index].datosDinamicos != undefined )
+              {
+                y += 32;
+                for (let index2 = 0; index2 < this.historiaCLinica[index].datosDinamicos.length; index2++)
+                {
+                  y += 7;
+                  let text =`${this.historiaCLinica[index].datosDinamicos[index2].clave}: ${this.historiaCLinica[index].datosDinamicos[index2].valor}`;
+                  doc.text(text, 10, y)
+                } 
+              }
+
+              count += 1;
+              y += 50;
+            }
+          }
+
+          doc.save(`${this.signInService.usuario?.firstname}-${this.signInService.usuario?.surname}`);
+          this.loading = false;
+        }
+      )
+    } else {
+      alert('No existe historia clínica')
+    }
+
+
   }
 
   private async agregarDatosDinamicos()
@@ -217,7 +339,6 @@ export class Perfil implements OnInit, OnDestroy
               }
             
             }
-            console.log(this.historiaCLinica);
           }
         }
       )
