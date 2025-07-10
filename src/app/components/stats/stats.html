@@ -1,0 +1,49 @@
+<app-header></app-header>
+<div class="container">
+
+    @if (this.loading)
+    {
+        <div class="spinner">
+            <mat-spinner mode="indeterminate"></mat-spinner>
+        </div>
+    }
+
+    <div class="botones">
+        <button mat-flat-button (click)="this.setDatasetTurnosPorEspecialidad()">Turnos por especialidad</button>
+        <button mat-flat-button (click)="this.setDatasetTurnosPorDia()" >Turnos por día</button>
+        <button mat-flat-button (click)="this.ocultarChart('solicitados')">Turnos solicitados</button>
+        <button mat-flat-button (click)="this.ocultarChart('finalizados')">Turnos finalizados</button>
+    </div>
+
+    @if (this.showDatePicker)
+    {
+        <div class="datepickers-container">
+            <div id="dp1">
+                <label>Fecha inicial:</label>
+                <input class="datepicker" type="date" [(ngModel)]="this.fechaInicial">
+            </div>
+            <div id="dp2">
+                <label>Fecha final:</label>
+                <input class="datepicker" type="date" [(ngModel)]="this.fechaFinal">
+            </div>
+            <div id="gbtn">
+                <button mat-flat-button 
+                (click)="setDatasetSegunModo()"
+                [disabled]="(this.fechaInicial == '') || (this.fechaFinal == '')">Generar</button>
+            </div>
+        </div>
+    }
+
+    @if (this.showChart)
+    {
+        <div #dataToExport class="grafico">
+            <app-chart-bar2
+            [newLabels]="this.labels"
+            [newData]="this.data"
+            ></app-chart-bar2>
+        </div>
+        <div>
+            <button mat-flat-button (click)="downloadAsPdf()" >Descargar PDF</button>
+        </div>
+    }
+</div>

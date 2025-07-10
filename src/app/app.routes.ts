@@ -71,8 +71,8 @@ export const routes: Routes = [
         loadComponent: () => import('./components/historia/historia').then( c => c.HistoriaComponent)
     },
     {
-        path: 'test',
-        loadComponent: () => import('./components/test/test').then(c => c.BarChartComponent)
+        path: 'estadisticas',
+        loadComponent: () => import('./components/stats/stats').then(c => c.Stats)
     },
     {
         path: '**',

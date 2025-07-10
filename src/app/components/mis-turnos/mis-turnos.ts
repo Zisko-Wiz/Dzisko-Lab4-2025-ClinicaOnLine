@@ -520,7 +520,6 @@ export class MisTurnos implements AfterViewInit, OnInit
   recibirRespuestaCaptcha(respuesta: boolean)
   {
     this.captchaValido = respuesta;
-    console.log(this.captchaValido);
   }
 
 

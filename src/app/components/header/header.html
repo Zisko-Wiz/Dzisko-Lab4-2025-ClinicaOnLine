@@ -3,7 +3,7 @@
         <li>
             <img style="float: left;" src="hospital.png" alt="logo" class="logo">
         </li>
-        <li ><button routerLink="/home">Página principal</button></li>
+        <li id="home-btn"><button routerLink="/home">Página principal</button></li>
         <li><h1>{{mensajeBienvenida}}</h1></li>
         @if (this.ingreso)
         {
@@ -12,6 +12,7 @@
             <li style="float:right"><button routerLink="/turnos">Turnos</button></li>
             @if (this.signInService.userRole == "administrador")
             {
+                <li style="float: right;"><button routerLink="/estadisticas">Estadísticas</button></li>
                 <li style="float: right;"><button routerLink="/usuarios">Usuarios</button></li>
             } @else if (this.signInService.userRole == 'especialista')
             {
