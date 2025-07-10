@@ -29,7 +29,7 @@ export class Stats implements OnInit
 {
   private supaService = inject(SupaService);
   protected titulo: string = "";
-  protected loading: boolean = true;
+  protected loading: boolean = false;
   protected showChart: boolean = false;
   protected showDatePicker: boolean = false;
   protected turnos: Turno[] = [];
