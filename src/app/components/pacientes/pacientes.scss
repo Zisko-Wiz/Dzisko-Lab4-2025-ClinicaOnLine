@@ -13,9 +13,9 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     width: 80vw;
-    padding-top: 3vh;
-    row-gap: 2vh;
+    padding-top: 10vh;
     overflow-y: auto;
+    height: 110%;
 }
 
 .card
@@ -30,7 +30,7 @@
 
 p
 { 
-  white-space:pre
+    white-space:pre
 }
 
 .historia
@@ -53,4 +53,9 @@ p
 h3
 {
     cursor: pointer;
+}
+
+body
+{
+    overflow: auto;
 }

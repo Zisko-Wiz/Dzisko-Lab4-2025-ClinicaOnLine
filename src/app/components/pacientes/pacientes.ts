@@ -92,8 +92,6 @@ export class Pacientes implements OnInit
         this.listaFinal.push(t);        
       }
     }
-
-    console.log(this.listaFinal);
     this.loading = false;
   }
 
@@ -129,7 +127,7 @@ export class Pacientes implements OnInit
   {
     return this.supaService.supabase.from('historia')
     .select()
-    .order('fecha', { ascending: true })
+    .order('fecha', { ascending: false })
     .then(
       ( {data, error} ) => 
         {
@@ -146,7 +144,7 @@ export class Pacientes implements OnInit
   {
     return this.supaService.supabase.from('datos_dinamicos')
     .select()
-    .order('fecha', { ascending: true })
+    .order('fecha', { ascending: false })
     .then(
       ( {data, error} ) => 
         {

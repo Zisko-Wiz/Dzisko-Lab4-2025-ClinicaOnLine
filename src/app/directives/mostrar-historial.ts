@@ -11,11 +11,13 @@ export class MostrarHistorial {
   @HostListener('click') onClick()
   {
     this.renderer.setStyle(this.el.nativeElement, 'height', '100%');
+    this.renderer.setStyle(this.el.nativeElement, 'z-index', 200)
   }
 
   @HostListener('mouseleave') onMouseLeave() {
     this.renderer.setStyle(this.el.nativeElement, 'width', '20rem');
     this.renderer.setStyle(this.el.nativeElement, 'height', '3rem');
+    this.renderer.setStyle(this.el.nativeElement, 'z-index', 100)
   }
 
 }
