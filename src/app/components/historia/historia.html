@@ -6,6 +6,10 @@
                 <h3>{{item.fecha | date: 'dd/MM/yyyy HH:mm'}}</h3>
                 <h2>{{item.especialidad}}</h2>
                 <h4>Historia clínica:</h4>
+                <p>Altura: {{item.altura}}</p>
+                <p>Peso: {{item.peso}}</p>
+                <p>Temperatura: {{item.temperatura}}</p>
+                <p>Presión: {{item.presion}}</p>
                 @for (dato of item.datosDinamicos; track $index)
                 {
                     <p>{{dato.clave}}: {{dato.valor}}</p>

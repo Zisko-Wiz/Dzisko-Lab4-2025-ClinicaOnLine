@@ -491,6 +491,7 @@ export class MisTurnos implements AfterViewInit, OnInit
     this.supabaseService.supabase.from('historia')
     .insert(
       {
+        especialidad: this.especialidadSeleccionada,
         email_paciente: this.emailPacienteSeleccionado,
         email_especialista: this.signInService.usuario?.email,
         fecha: this.fechaTurnoSeleccionado,
